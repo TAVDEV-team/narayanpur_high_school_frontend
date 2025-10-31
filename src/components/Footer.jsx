@@ -93,7 +93,7 @@ export default function Footer() {
         <p className="text-center text-xs mt-8 text-gray-300">
           © {new Date().getFullYear()} Narayanpur High School. All rights reserved.
           <br />
-          Developed by TavDev
+          <a href="https://tavdev.com/">Developed by TavDev</a>
         </p>
       </div>
     </footer>
