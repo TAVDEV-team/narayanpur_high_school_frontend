@@ -105,9 +105,10 @@ export default function Routine() {
     2: "11:00-11:40",
     3: "11:40-12:20",
     4: "12:20-13:00",
-    5: "14:00-14:40",
-    6: "14:40-15:20",
-    7: "15:20-16:00",
+    5:"Tiffin",
+    6: "14:00-14:40",
+    7: "14:40-15:20",
+    8: "15:20-16:00",
   };
 
   // DEBUG
@@ -176,7 +177,7 @@ export default function Routine() {
                   </th>
                 ))}
                 <th className="px-4 py-3 text-center">Tiffin Break (13:00-14:00)</th>
-                {[5, 6, 7].map((slot) => (
+                {[6,7,8].map((slot) => (
                   <th key={slot} className="px-4 py-3 text-center">
                     {slotTimes[slot]}
                   </th>
@@ -312,7 +313,7 @@ export default function Routine() {
                   );
                 })}
 
-              {loading && <Loading message="Loading Routine" />}
+              
               {status === "error" && (
                 <tr>
                   <td colSpan="8" className="px-4 py-3 text-center text-red-600">
@@ -330,6 +331,7 @@ export default function Routine() {
               )}
             </tbody>
           </table>
+            {loading && <Loading message="Loading Routine" />}
         </div>
       </div>
     </div>
