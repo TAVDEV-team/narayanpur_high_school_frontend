@@ -93,11 +93,11 @@ export default function Routine() {
 
   // Class cards matching backend aclass
   const classCards = [
-    { id: 2, name: "Class 6", color: "bg-blue-100" },
-    { id: 3, name: "Class 7", color: "bg-green-100" },
-    { id: 4, name: "Class 8", color: "bg-red-100" },
-    { id: 5, name: "Class 9", color: "bg-yellow-100" },
-    { id: 6, name: "Class 10", color: "bg-orange-100" },
+    { id: 1, name: "Class 6", color: "bg-blue-100" },
+    { id: 2, name: "Class 7", color: "bg-green-100" },
+    { id: 3, name: "Class 8", color: "bg-red-100" },
+    { id: 4, name: "Class 9", color: "bg-yellow-100" },
+    { id: 5, name: "Class 10", color: "bg-orange-100" },
   ];
 
   const slotTimes = {
@@ -258,7 +258,7 @@ export default function Routine() {
                       </td>
 
                       {/* Afternoon slots */}
-                      {[5, 6, 7].map((slot) => {
+                      {[6, 7, 8].map((slot) => {
                         const item = slotsByDay[slot.toString()];
                         return (
                           <td key={slot} className="px-4 py-3 text-center">
