@@ -258,7 +258,7 @@ export default function Routine() {
                       </td>
 
                       {/* Afternoon slots */}
-                      {[5, 6, 7].map((slot) => {
+                      {[6, 7, 8].map((slot) => {
                         const item = slotsByDay[slot.toString()];
                         return (
                           <td key={slot} className="px-4 py-3 text-center">
