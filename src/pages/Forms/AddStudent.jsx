@@ -121,7 +121,7 @@ const renderSelect = ({ label, name, options, required = false }) => (
       console.log( data );
       setSuccessMessage("✅ Student added successfully!");
     } catch (err) {
-      // console.error("Server response:", err.response?.data || err.message);
+      console.error("Server response:", err.response?.data || err.message);   
       setErrorMessage("❌ Failed to add student. Please try again.");
     } finally {
       setLoading(false);
@@ -132,7 +132,7 @@ const getValue = (name) => {
   const keys = name.split(".");
   let val = formData;
   for (let key of keys) {
-    if (val[key] === undefined) return "";  // ✅ only bail if truly undefined
+    if (val[key] === undefined) return "";  
     val = val[key];
   }
   return val;
@@ -230,7 +230,7 @@ const getValue = (name) => {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            {label: "Registration Number", name: "account.user.username", required: true },
+            {label: "Registration Number", name: "account.user.username"},
             { label: "First Name", name: "account.user.first_name", required: true },
             { label: "Last Name", name: "account.user.last_name", required: true },
             { label: "Email", name: "account.user.email", type: "email" },
@@ -249,7 +249,6 @@ const getValue = (name) => {
             { label: "Roll Number", name: "roll_number", type: "number" },
             { label: "Date of Birth", name: "account.date_of_birth", type: "date", required: true },
             { label: "Mobile", name: "account.mobile", required: true },
-            // { label: "Religion", name: "account.religion" , required: true},
             { label: "Address", name: "account.address", required: true },
             { label: "Admission Date", name: "account.joining_date", type: "date", required: true },
             { label: "Last Educational Institute", name: "account.last_educational_institute", required: true },
