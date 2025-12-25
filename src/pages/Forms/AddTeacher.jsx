@@ -10,7 +10,6 @@ import Dropdown from "./BaseAccount/DropDown";
 export default function AddTeacherForm() {
   const { form, handleChange, handleFileChange, handleSubmit } = useAccountForm(
     {
-      last_educational_institute: "",
       base_subject: "",
       is_class_teacher: "",
       class_teacher_of: "",

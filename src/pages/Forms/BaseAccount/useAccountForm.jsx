@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import API from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 
+const today = new Date().toISOString().split("T")[0];
+
 export default function useAccountForm(initialExtraFields = {}, endpoint) {
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ export default function useAccountForm(initialExtraFields = {}, endpoint) {
     religion: "",
     gender: "",
     address: "",
-    joining_date: "",
+    joining_date: today,
     last_educational_institute: "",
     ...initialExtraFields, // ✅ staff-only or teacher-only fields
   });
