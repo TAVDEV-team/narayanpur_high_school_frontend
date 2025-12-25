@@ -26,7 +26,6 @@ const AccountDashboard = () => {
 useEffect(() => {
   const fetchAccount = async () => {
     const accountId = localStorage.getItem("accountId");
-    console.log(accountId)
     if (!accountId) {
       navigate("/login");
       return;

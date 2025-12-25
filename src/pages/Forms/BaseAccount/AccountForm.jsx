@@ -6,19 +6,19 @@ import Dropdown from "./DropDown";
 
 export const textFields = [
   { label: "Username", name: "username", type: "text", placeholder: "username" },
-  { label: "First Name", name: "first_name", type: "text", placeholder: "first name" },
-  { label: "Last Name", name: "last_name", type: "text", placeholder: "last name" },
-  { label: "Email", name: "email", type: "email", placeholder: "email" },
-  { label: "Phone Number", name: "mobile", type: "text", placeholder: "phone number" },
-  { label: "Address", name: "address", type: "text", placeholder: "address" },
-  { label: "PassWord", name: "password", type: "password", placeholder: "PassWord" },
-  { label: "Confirm PassWord", name: "confirm_password", type: "password", placeholder: "PassWord Again" },
-  { label: "Last Educational Institute", name: "last_educational_institute", type: "text", placeholder: "Last Educational Institute" },
+  { label: "First Name", name: "first_name", type: "text", placeholder: "first name",required:true },
+  { label: "Last Name", name: "last_name", type: "text", placeholder: "last name" ,required:true},
+  { label: "Email", name: "email", type: "email", placeholder: "email",required:true },
+  { label: "Phone Number", name: "mobile", type: "text", placeholder: "phone number",required:true },
+  { label: "Address", name: "address", type: "text", placeholder: "address",required:true },
+  { label: "PassWord", name: "password", type: "password", placeholder: "PassWord",required:true },
+  { label: "Confirm PassWord", name: "confirm_password", type: "password", placeholder: "PassWord Again",required:true },
+  { label: "Last Educational Institute", name: "last_educational_institute", type: "text", placeholder: "Last Educational Institute",required:true },
 ];
 
 export const dateFields = [
-  { label: "Date of Birth", name: "date_of_birth" },
-  { label: "Joining Date", name: "joining_date" },
+  { label: "Date of Birth", name: "date_of_birth" ,required:true},
+  { label: "Joining Date", name: "joining_date",required:true },
 ];
 
 export const dropDownFields = [
@@ -29,6 +29,7 @@ export const dropDownFields = [
       { label: "Male", value: "male" },
       { label: "Female", value: "female" },
     ],
+    required:true
   },
   {
     label: "Religion",
@@ -39,6 +40,7 @@ export const dropDownFields = [
       { label: "Christian", value: "christian" },
       { label: "Buddhist", value: "buddhist" },
     ],
+    required:true
   },
 ];
 
@@ -55,6 +57,8 @@ export default function AccountForm({ formData, handleChange, handleFileChange }
           placeholder={field.placeholder}
           value={formData[field.name] || ""}
           onChange={handleChange}
+          required={field.required}
+          
         />
       ))}
 
@@ -64,7 +68,8 @@ export default function AccountForm({ formData, handleChange, handleFileChange }
           label={field.label}
           name={field.name}
           value={formData[field.name] || ""}
-          onChange={handleChange} // ✅ same
+          onChange={handleChange}
+          required={field.required}
         />
       ))}
 
@@ -75,7 +80,8 @@ export default function AccountForm({ formData, handleChange, handleFileChange }
           name={field.name}
           options={field.options}
           value={formData[field.name] || ""}
-          onChange={handleChange} // ✅ same
+          onChange={handleChange}
+          required={field.required}
         />
       ))}
 
@@ -88,7 +94,7 @@ export default function AccountForm({ formData, handleChange, handleFileChange }
           type="file"
           id="image"
           name="image"
-          onChange={handleFileChange} // ✅ file handler
+          onChange={handleFileChange}
           className="border border-gray-300 px-3 sm:px-4 py-2 rounded-md w-full text-base sm:text-lg"
         />
       </div>
