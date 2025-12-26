@@ -74,7 +74,7 @@ if (group && group !== "all") {
 
             {/* Student Image */}
             <img
-              src={student.account.image || "/default-avatar.png"}
+              src={student.account.image || "https://ysrjaxciwztrqvwwjzmp.supabase.co/storage/v1/object/public/media/Accounts/default.png"}
               alt={student.account.full_name || student.account.user.username}
               className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full border-4 border-indigo-200"
             />
