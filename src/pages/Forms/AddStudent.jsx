@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import API from "../../api/api";
 import Loading from "../../components/Loading";
+import Dropdown from "./BaseAccount/DropDown";
 
 export default function AddStudent() {
   const [formData, setFormData] = useState({
@@ -9,14 +10,14 @@ export default function AddStudent() {
     roll_number:"",
     account: {
       user: {
-        username: "",
+        username: "default",
         first_name: "",
         last_name: "",
         email: "student_email@gmail.com",
         password: "student1234",
         confirm_password: "student1234",
       },
-      
+      gender:"",
       image: null,
       date_of_birth: "",
       mobile: "",
@@ -28,13 +29,29 @@ export default function AddStudent() {
   });
   // const roll = API.get()
   // 1. Extract religion options as config
-const RELIGIONS = [
-  { value: "islam", label: "Islam" },
-  { value: "hindu", label: "Hinduism" },
-  { value: "christian", label: "Christianity" },
-  { value: "buddhist", label: "Buddhism" },
-];
 
+const dropDownFields = [
+  {
+    label: "Gender",
+    name: "account.gender",
+    options: [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+    ],
+    required:true
+  },
+  {
+    label: "Religion",
+    name: "account.religion",
+    options: [
+      { label: "Islam", value: "islam" },
+      { label: "Hindu", value: "hindu" },
+      { label: "Christian", value: "christian" },
+      { label: "Buddhist", value: "buddhist" },
+    ],
+    required:true
+  },
+];
 // 2. Add a reusable renderSelect helper
 const renderSelect = ({ label, name, options, required = false }) => (
   <div className="flex flex-col space-y-1">
@@ -256,13 +273,24 @@ const getValue = (name) => {
         </div>
       </div>
 
-      {/* Religion */}
+      {/* Religion
       {renderSelect({
         label: "Religion",
         name: "account.religion",
         options: RELIGIONS,
         required: true,
-      })}
+      })} */}
+    {dropDownFields.map((field) => (
+      <Dropdown
+        key={field.name}
+        label={field.label}
+        name={field.name}
+        options={field.options}
+        value={getValue(field.name)}
+        onChange={handleChange}
+        required={field.required}
+      />
+    ))}
 
       {/* Submit button */}
       <button
