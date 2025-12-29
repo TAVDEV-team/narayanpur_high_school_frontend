@@ -2,13 +2,24 @@
 import { useFetchList } from "./UseFetchList";
 import ListWrapper from "../../components/Common/ListWrapper";
 import PersonCard from "../../components/Common/PersonCard";
+import Pagination from "../../components/Pagination";
 
-export default function StaffsInformation() {
-  const { data: staffs, loading, error } = useFetchList("/user/office-helpers/");
+export default function helpersInformation() {
+  const {
+    data: helpers,
+    loading,
+    error,
+    page,
+    setPage,
+    next,
+    previous
+   } = useFetchList("/user/office-helpers/");
 
   return (
-    <ListWrapper title="Staffs" data={staffs} loading={loading} error={error}>
-      {staffs.map((staff) => (
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1">
+            <ListWrapper title="helpers" data={helpers} loading={loading} error={error}>
+      {helpers.map((staff) => (
         <PersonCard
           key={staff.account.id}
           account={staff.account}
@@ -25,5 +36,15 @@ export default function StaffsInformation() {
         />
       ))}
     </ListWrapper>
+      </div>
+      <div className="mt-auto">
+      <Pagination
+        page={page}
+        next={next}
+        previous={previous}
+        onPageChange={setPage}
+      />
+    </div>
+    </div>
   );
 }

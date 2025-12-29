@@ -14,9 +14,9 @@ export default function PhotoGallery() {
         const res = await API.get(
           "/gallery/photos/"
         );
-        console.log(res.data)
+        console.log(res.data.results)
         // Assuming API returns an array of image objects with `url` field
-        setImages(res.data); 
+        setImages(res.data.results); 
       } catch (err) {
         console.error("Failed to fetch gallery images:", err);
       }

@@ -1,58 +1,65 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api/api";
-import { FaPhoneAlt, FaEnvelope, FaIdBadge } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import Pagination from "../components/Pagination";
 
 export default function ClassStudents() {
   const { grade, group } = useParams();
+
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-  
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const res = await API.get(
-          "/user/students/"
+  const [page, setPage] = useState(1);
+  const [next, setNext] = useState(null);
+  const [previous, setPrevious] = useState(null);
+
+
+  const fetchStudents = async () => {
+    setLoading(true);
+    try {
+      const res = await API.get(`/user/students/?page=${page}`);
+
+      //save pagination info
+      setNext(res.data.next);
+      setPrevious(res.data.previous);
+
+      //filter ONLY current page results
+      let filtered;
+
+      if (group && group !== "all") {
+        filtered = res.data.results.filter(
+          (student) =>
+            student.aclass.startsWith(`Class ${grade}`) &&
+            student.group &&
+            student.group.toLowerCase() === group.toLowerCase()
         );
-
-        let filtered;
-if (group && group !== "all") {
-  // Class with a real group (9/10)
-  filtered = res.data.filter(
-    (student) =>
-      student.aclass.startsWith(`Class ${grade}`) &&
-      student.group &&
-      student.group.toLowerCase() === group.toLowerCase()
-  );
-} else {
-  // Class without group OR redirected "all"
-  filtered = res.data.filter(
-    (student) => student.aclass.startsWith(`Class ${grade}`)
-  );
-}
-
-
-        setStudents(filtered);
-      } catch (err) {
-        console.error("Error fetching students:", err);
-      } finally {
-        setLoading(false);
+      } else {
+        filtered = res.data.results.filter((student) =>
+          student.aclass.startsWith(`Class ${grade}`)
+        );
       }
-    };
+
+      setStudents(filtered);
+    } catch (err) {
+      console.error("Error fetching students:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //re-fetch when grade, group, or page changes
+  useEffect(() => {
     fetchStudents();
-  }, [grade, group]);
+  }, [grade, group, page]);
 
   if (loading) {
-    return <Loading message="Students"/>;
+    return <Loading message="Students" />;
   }
 
   return (
-   <div className="min-h-screen bg-sky-50 py-10 px-4 mt-16">
-  <div className="max-w-6xl mx-auto">
+   <div className="min-h-screen flex flex-col bg-sky-50 mt-16">
+  <div className="flex-1 py-10 px-4">
     {/* Header */}
     <h1 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center bg-blue-950 rounded-xl py-2 px-8 shadow-lg mt-5">
       Class {grade}
@@ -68,9 +75,9 @@ if (group && group !== "all") {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {students.map((student) => (
           <div
-  key={student.account.id}
-  className="flex flex-row items-center sm:items-start gap-4 bg-white shadow-md rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-200 p-5"
->
+        key={student.account.id}
+        className="flex flex-row items-center sm:items-start gap-4 bg-white shadow-md rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-200 p-5"
+      >
 
             {/* Student Image */}
             <img
@@ -101,6 +108,16 @@ if (group && group !== "all") {
       </div>
     )}
   </div>
+      <div className="mt-auto">
+      <Pagination
+        page={page}
+        next={next}
+        previous={previous}
+        onPageChange={setPage}
+      />
+    </div>
+
 </div>
+
   );
 }
