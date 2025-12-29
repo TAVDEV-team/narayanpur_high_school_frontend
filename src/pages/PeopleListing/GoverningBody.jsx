@@ -1,12 +1,23 @@
 import { useFetchList } from "./UseFetchList";
 import ListWrapper from "../../components/Common/ListWrapper";
 import PersonCard from "../../components/Common/PersonCard";
+import Pagination from "../../components/Pagination";
 
 export default function GoverningBody() {
-  const { data: members, loading, error } = useFetchList("/user/governing/");
+  const { 
+    data: members,
+    loading,
+    error,
+    page,
+    setPage,
+    next,
+    previous,
+  } = useFetchList("/user/governing/");
 
   return (
-    <ListWrapper title="Governing Body" data={members} loading={loading} error={error}>
+      <div className="min-h-screen flex flex-col">
+      <div className="flex-1">
+        <ListWrapper title="Governing Body" data={members} loading={loading} error={error}>
       {members.map((member) => (
         <PersonCard
           key={member.account?.id || member.designation}
@@ -23,5 +34,17 @@ export default function GoverningBody() {
         />
       ))}
     </ListWrapper>
+    </div>
+          <div className="mt-auto">
+          <Pagination
+            page={page}
+            next={next}
+            previous={previous}
+            onPageChange={setPage}
+          />
+        </div>
+    </div>
+    
+    
   );
 }
