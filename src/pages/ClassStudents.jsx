@@ -58,8 +58,8 @@ export default function ClassStudents() {
   }
 
   return (
-   <div className="min-h-screen bg-sky-50 py-10 px-4 mt-16">
-  <div className="max-w-6xl mx-auto">
+   <div className="min-h-screen flex flex-col bg-sky-50 mt-16">
+  <div className="flex-1 py-10 px-4">
     {/* Header */}
     <h1 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center bg-blue-950 rounded-xl py-2 px-8 shadow-lg mt-5">
       Class {grade}
