@@ -15,7 +15,8 @@ export default function MessageCarousel() {
     const fetchMessages = async () => {
       try {
         const res = await API.get("/nphs/message/");
-        setMessages(res.data);
+        setMessages(res.data.results);
+        console.log(res.data.results)
       } catch (err) {
         console.error("Error fetching messages:", err);
       }

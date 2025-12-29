@@ -22,7 +22,7 @@ export default function ClassStudents() {
         let filtered;
 if (group && group !== "all") {
   // Class with a real group (9/10)
-  filtered = res.data.filter(
+  filtered = res.data.results.filter(
     (student) =>
       student.aclass.startsWith(`Class ${grade}`) &&
       student.group &&
@@ -30,7 +30,7 @@ if (group && group !== "all") {
   );
 } else {
   // Class without group OR redirected "all"
-  filtered = res.data.filter(
+  filtered = res.data.results.filter(
     (student) => student.aclass.startsWith(`Class ${grade}`)
   );
 }
