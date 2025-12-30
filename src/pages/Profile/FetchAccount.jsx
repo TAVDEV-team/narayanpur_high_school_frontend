@@ -12,7 +12,7 @@ export async function FetchProfessionalAccount(account_id) {
     try {
       const res = await API.get(url);
       const targetId = Number(account_id);
-      const account = res.data.find(t => t.account.id === targetId);
+      const account = res.data.results.find(t => t.account.id === targetId);
 
 
       if (account) {
