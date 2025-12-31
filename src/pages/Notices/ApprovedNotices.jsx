@@ -1,40 +1,27 @@
-import React, { useEffect, useState } from "react";
-import API from "../../api/api";
+import { ListAPI } from "../../api/ListAPI";
 import { Link } from "react-router-dom";
-import { Loader2 } from "lucide-react";
-import Loading from "../../components/Loading";
-export default function ApprovedNotices() {
-  const [notices, setNotices] = useState([]);
-  const [loading, setLoading] = useState(true);
+import Pagination from "../../components/Pagination";
+import ListWrapper from "../../components/Common/ListWrapper";
 
-  useEffect(() => {
-    API
-      .get("/nphs/notices/approved/")
-      .then((res) => setNotices(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+export default function ApprovedNotices() {
+
+    const { 
+    data: notices,
+    loading,
+    error,
+    page,
+    setPage,
+    next,
+    previous,
+  } = ListAPI("/nphs/notices/approved/");    
 
   return (
-    <section className="py-5 px-4 sm:px-8 md:px-20 bg-sky-50 min-h-screen">
-      {/* Digital Board Header */}
-      <div className="flex justify-center">
-  <div className="mb-10 mt-20 bg-blue-950 text-white py-4 sm:py-4 rounded-2xl md:rounded-3xl shadow-xl max-w-4xl w-full text-center">
-    <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wide drop-shadow-lg">
-      📌 Notice Board
-    </h1>
-    <p className="text-sm sm:text-base md:text-lg mt-1 sm:mt-2 opacity-90 font-medium">
-      All approved notices of the school are published here
-    </p>
-  </div>
-</div>
-
+  <section className="py-5 px-4 sm:px-8 md:px-20 bg-sky-50 min-h-screen">
+  <ListWrapper title="Approved Notices" data={notices} loading={loading} error={error} >
 
       {/* Notices Section */}
       <div className="space-y-3">
-        {loading ? (
-          <Loading message="Notices"/>
-        ) : notices.length > 0 ? (
+        {notices.length > 0 ? (
           notices.map((notice) => (
             <div
               key={notice.slug}
@@ -78,6 +65,15 @@ export default function ApprovedNotices() {
           </p>
         )}
       </div>
+  </ListWrapper>
+
+<div className="mt-auto">
+<Pagination
+page={page}
+next={next}
+previous={previous}
+onPageChange={setPage}/>
+    </div>
     </section>
   );
 }
