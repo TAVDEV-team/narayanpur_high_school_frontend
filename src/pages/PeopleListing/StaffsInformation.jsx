@@ -1,5 +1,4 @@
-
-import { useFetchList } from "./UseFetchList";
+import { ListAPI } from "../../api/ListAPI";
 import ListWrapper from "../../components/Common/ListWrapper";
 import PersonCard from "../../components/Common/PersonCard";
 import Pagination from "../../components/Pagination";
@@ -13,12 +12,12 @@ export default function helpersInformation() {
     setPage,
     next,
     previous
-   } = useFetchList("/user/office-helpers/");
+   } = ListAPI("/user/office-helpers/");
 
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1">
-            <ListWrapper title="helpers" data={helpers} loading={loading} error={error}>
+      <ListWrapper title="helpers" data={helpers} loading={loading} error={error}>
       {helpers.map((staff) => (
         <PersonCard
           key={staff.account.id}

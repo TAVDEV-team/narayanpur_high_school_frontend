@@ -1,4 +1,4 @@
-import { useFetchList } from "./UseFetchList";
+import { ListAPI } from "../../api/ListAPI";
 import ListWrapper from "../../components/Common/ListWrapper";
 import PersonCard from "../../components/Common/PersonCard";
 import Pagination from "../../components/Pagination";
@@ -12,7 +12,7 @@ export default function GoverningBody() {
     setPage,
     next,
     previous,
-  } = useFetchList("/user/governing/");
+  } = ListAPI("/user/governing/");
 
   return (
       <div className="min-h-screen flex flex-col">
