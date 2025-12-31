@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Loader2, Bell } from "lucide-react";
+import { Bell } from "lucide-react";
 import Loading from "../../components/Loading";
 import CardHeader from "../../components/Titles/CardHeads";
-import API from "../../api/api";
-export default function LatestNotices() {
-  const [notices, setNotices] = useState([]);
-  const [loading, setLoading] = useState(true);
+import { ListAPI } from "../../api/ListAPI";
 
-  useEffect(() => {
-    API
-      .get("/nphs/notices/approved/")
-      .then((res) => setNotices(res.data.slice(0, 5)))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+export default function LatestNotices() {
+  const {
+    data: notices,
+    loading,
+    error,
+    page,
+    setPage,
+    next,
+    previous,
+    setData,
+  } = ListAPI("/nphs/notices/approved/");
 
   return (
     <section className="py-12 px-4 sm:px-6 md:px-20 ">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import API from "../../api/api";
+import API from "./api";
 
-export function useFetchList(endpoint) {
+export function ListAPI(endpoint) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
