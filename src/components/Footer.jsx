@@ -74,17 +74,15 @@ export default function Footer() {
             <p className="text-sm md:text-base leading-relaxed">
               📍 Chauddagram, Cumilla, Bangladesh
               <br />
-              ☎️ <a href="tel:+880123456789" className="hover:underline">
-                +880-123456789
+              ☎️ <a>
+                +8801819823733 
               </a>
               <br />
               ✉️{" "}
               <a
-                href="mailto:info@narayan.edu.bd"
-                className="hover:underline"
                 aria-label="Email"
               >
-                info@narayan.edu.bd
+                sn105409@gmail.com
               </a>
             </p>
           </div>
