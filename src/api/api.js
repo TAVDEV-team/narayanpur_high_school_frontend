@@ -5,12 +5,12 @@ const API = axios.create({
   // baseURL: "http://127.0.0.1:8000/api",
 });
 
-// 🔹 Attach token on every request
+// 🔹 Attach accessToken on every request
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },

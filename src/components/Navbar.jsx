@@ -7,16 +7,28 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const mobileRef = useRef(null);
   const toggleRef = useRef(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState(null);
   
+const [isLoggedIn, setIsLoggedIn] = useState(() =>
+  !!localStorage.getItem("accessToken")
+);
 
-   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+useEffect(() => {
+  const handleLoginEvent = () => {
+    setIsLoggedIn(!!localStorage.getItem("accessToken"));
+  };
+  window.addEventListener("login", handleLoginEvent);
+  window.addEventListener("logout", handleLoginEvent); // optional: react to logout
+  return () => {
+    window.removeEventListener("login", handleLoginEvent);
+    window.removeEventListener("logout", handleLoginEvent);
+  };
+}, []);
+
+
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -65,15 +77,18 @@ const Navbar = () => {
     setLogoutError(null);
     setLogoutMessage("");
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       const res = await fetch(
         "https://narayanpur-high-school.onrender.com/api/user/logout/",
-        { method: "POST", headers: { Authorization: `Token ${token}` } }
+        { method: "POST", headers: { Authorization: `Token ${accessToken}` } }
       );
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       setIsLoggedIn(false);
       setLogoutMessage("✅ Logged out successfully");
+      localStorage.removeItem("accessToken");
+      window.dispatchEvent(new Event("logout"));
+
       setTimeout(() => setLogoutMessage(""), 3000);
     } catch (error) {
       console.error("Logout failed:", error);
