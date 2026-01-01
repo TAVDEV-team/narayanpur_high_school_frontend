@@ -25,8 +25,40 @@ export default function AdmissionDocuments() {
           please bring the following documents when submitting the admission form.
         </p>
 
+        {/* Admission Fee Structure */}
+        <div className="mt-10">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+            💰 Admission Fee for all classes
+          </h2>
+
+          <div className="space-y-4 text-gray-700 text-sm sm:text-base">
+            <p><strong>Class 6:</strong> Monthly Fee ৳200, Admission Fee ৳100, Common Fees ৳1000 — <strong>Total ৳1300</strong></p>
+            <p><strong>Class 7:</strong> Monthly Fee ৳250, Admission Fee ৳150, Common Fees ৳1000 — <strong>Total ৳1400</strong></p>
+            <p><strong>Class 8:</strong> Monthly Fee ৳300, Admission Fee ৳200, Common Fees ৳1000 — <strong>Total ৳1500</strong></p>
+            <p><strong>Class 9:</strong> Monthly Fee ৳350, Admission Fee ৳250, Common Fees ৳1000 — <strong>Total ৳1600</strong></p>
+            <p><strong>Class 10:</strong> Monthly Fee ৳350, Admission Fee ৳250, Common Fees ৳1000 — <strong>Total ৳1600</strong></p>
+          </div>
+
+          <div className="mt-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+            <h3 className="font-semibold text-blue-800 mb-2">
+              Common Fees (Applicable for All Classes)
+            </h3>
+            <ul className="list-disc list-inside text-blue-700 space-y-1 text-sm sm:text-base">
+              <li>Admission Form Fee: ৳100</li>
+              <li>Teacher Welfare Fee: ৳100</li>
+              <li>Sports Fee: ৳200</li>
+              <li>Scout Fee: ৳25</li>
+              <li>Library Fee: ৳75</li>
+              <li>Development Fee: ৳400</li>
+              <li>Science Lab Fee: ৳75</li>
+              <li>Red Crescent & BNCC Fee: ৳25</li>
+            </ul>
+          </div>
+        </div>
+
+
         {/* Documents List */}
-        <ul className="space-y-4 font-semibold">
+        <ul className="space-y-4 font-semibold mt-16">
           {documents.map((item, index) => (
             <li
               key={index}
