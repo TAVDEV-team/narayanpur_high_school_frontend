@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import API from "../api/api";
 import { ClipboardList, FileText, Award } from "lucide-react";
 import Loading from "../components/Loading";
+import { ListAPI } from "../api/ListAPI";
 
 const examapi = "/result/exam/";
 
 export default function ExamCard() {
-  const [exams, setExams] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+    const {
+    data: exams,
+    loading,
+    error,
+    page,
+    setPage,
+    next,
+    previous,
+  } = ListAPI(examapi);
   // Map exam titles to icons (fallback → ClipboardList)
   const iconMap = {
     test: <ClipboardList size={48} className="text-blue-600" />,
@@ -18,21 +24,6 @@ export default function ExamCard() {
     final: <Award size={48} className="text-purple-600" />,
   };
 
-  useEffect(() => {
-    const fetchExams = async () => {
-      try {
-        const res = await API.get(examapi);
-        setExams(res.data);
-        console.log(res.data)
-      } catch (err) {
-        setError("Failed to fetch exams.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchExams();
-  }, []);
 
   if (loading) {
     return <Loading message="exams"/>;
