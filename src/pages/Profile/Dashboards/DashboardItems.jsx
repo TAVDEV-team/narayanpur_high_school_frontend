@@ -14,10 +14,8 @@ LogOut,
     return (
       <div>
         {/* Conditional rendering for Headmaster */}
-        {account.is_headmaster && <HeadmasterDashboard navigate={navigate} />}
-
-        {/* Role-based dashboards */}
-        {role === "Teacher" && <TeacherDashboard navigate={navigate} />}
+        {role === "headmaster" && <HeadmasterDashboard navigate={navigate} />}
+        {(role === "Teacher" || role === "headmaster")&& <TeacherDashboard navigate={navigate} />}
         {role === "Office_Helper" && <OfficeHelperDashboard navigate={navigate} />}
         {role === "Student" && <StudentDashboard navigate={navigate}/>}
 
