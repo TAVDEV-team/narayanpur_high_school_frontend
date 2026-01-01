@@ -75,30 +75,30 @@ export default function ClassStudents() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {students.map((student) => (
           <div
-        key={student.account.id}
+        key={student.id}
         className="flex flex-row items-center sm:items-start gap-4 bg-white shadow-md rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-200 p-5"
       >
 
             {/* Student Image */}
             <img
-              src={student.account.image || "https://ysrjaxciwztrqvwwjzmp.supabase.co/storage/v1/object/public/media/Accounts/default.png"}
-              alt={student.account.full_name || student.account.user.username}
+              src={student.image || "https://ysrjaxciwztrqvwwjzmp.supabase.co/storage/v1/object/public/media/Accounts/default.png"}
+              alt={student.full_name }
               className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full border-4 border-indigo-200"
             />
 
             {/* Student Info */}
             <div className="mt-4 sm:mt-0 sm:ml-6 sm:text-left flex-1">
               <h2 className="text-xl font-semibold text-gray-800">
-                {student.account.full_name?.trim() || student.account.user.username}
+                {student.full_name?.trim()}
               </h2>
               <p className="text-gray-600 text-base mt-1">
                 <span className="font-semibold">Roll:</span> {student.roll_number}
               </p>
               <p className="text-gray-600 text-base mt-1">
-                <span className="font-semibold">Religion:</span> {student.account.display_religion}
+                <span className="font-semibold">Religion:</span> {student.display_religion}
               </p>
               <p className="text-gray-600 text-base mt-1">
-                <span className="font-semibold">Gender:</span> {student.account.display_gender}
+                <span className="font-semibold">Gender:</span> {student.display_gender}
               </p>
              
 
