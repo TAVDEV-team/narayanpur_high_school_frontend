@@ -95,10 +95,10 @@ export default function ClassStudents() {
                 <span className="font-semibold">Roll:</span> {student.roll_number}
               </p>
               <p className="text-gray-600 text-base mt-1">
-                <span className="font-semibold">Religion:</span> {student.display_religion}
+                <span className="font-semibold">Religion:</span> {student.religion}
               </p>
               <p className="text-gray-600 text-base mt-1">
-                <span className="font-semibold">Gender:</span> {student.display_gender}
+                <span className="font-semibold">Gender:</span> {student.gender}
               </p>
              
 
