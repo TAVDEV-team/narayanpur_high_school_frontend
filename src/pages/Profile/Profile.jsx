@@ -51,6 +51,10 @@ const AccountDashboard = () => {
       localStorage.clear();
       setIsLoggingOut(false);
       navigate("/login");
+      localStorage.removeItem("accessToken");
+      window.dispatchEvent(new Event("logout"));
+
+      
     }
   };
 
@@ -121,7 +125,7 @@ const AccountDashboard = () => {
 
         {/* Main */}
         <main className="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
-          <PersonalInfo account={profile} />
+          <PersonalInfo account={profile} role={role} />
         </main>
       </div>
     </section>

@@ -20,7 +20,7 @@ const Login = () => {
     setLoading(true);
     setMessage(null);
 
-    try {
+    try { 
       const res = await API.post("/user/token/", {
         username,
         password,
@@ -33,21 +33,9 @@ const Login = () => {
       localStorage.setItem("refreshToken", refresh);
       localStorage.setItem("accountId", account_id);
       localStorage.setItem("role", role);
+      window.dispatchEvent(new Event("login"));
 
-      // Deterministic routing
-      switch (role) {
-        case "headmaster":
-          navigate("/dashboard/headmaster");
-          break;
-        case "teacher":
-          navigate("/dashboard/teacher");
-          break;
-        case "student":
-          navigate("/dashboard/student");
-          break;
-        default:
-          navigate("/profile");
-      }
+      navigate("/profile");
 
     } catch (err) {
       const errorMsg =

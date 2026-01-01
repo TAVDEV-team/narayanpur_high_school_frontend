@@ -122,7 +122,7 @@ const renderSelect = ({ label, name, options, required = false }) => (
     }
 
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       const data = buildFormData(formData);
       
       await API.post(
@@ -130,7 +130,7 @@ const renderSelect = ({ label, name, options, required = false }) => (
         data,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
           },
         }
