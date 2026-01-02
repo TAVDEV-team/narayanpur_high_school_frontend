@@ -8,10 +8,17 @@ export default function GradeHandler() {
   const { grade } = useParams();
 
   if (noGroupGrades.includes(grade)) {
-    // For grades 6-8, show students directly
-    return <ClassStudents group="all" />;
+    return <
+      ClassStudents 
+      grade={grade}
+      group="all" 
+    />;
+
   } else {
     // For grades 9-10, show group selection
-    return <ClassGroups />;
+    return <
+    ClassGroups
+    
+    />;
   }
 }
