@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://narayanpur-high-school.onrender.com/api",
-  // baseURL: "http://127.0.0.1:8000/api",
+  // baseURL: "https://narayanpur-high-school.onrender.com/api",
+  baseURL: "http://127.0.0.1:8000/api",
 });
 
 // 🔹 Attach accessToken on every request
@@ -29,7 +29,7 @@ API.interceptors.response.use(
         try {
           const res = await API.post("/user/token/refresh/", { refresh: refreshToken });
           const newAccess = res.data.access;
-          localStorage.setItem("token", newAccess);
+          localStorage.setItem("accessToken", newAccess);
           originalRequest.headers.Authorization = `Bearer ${newAccess}`;
           return API(originalRequest);
         } catch {

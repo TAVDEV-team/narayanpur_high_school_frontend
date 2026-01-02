@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { BookOpen, GraduationCap, PenTool, NotebookText, Scroll } from "lucide-react";
 
 const classes = [
-  { classId: 4, title: "Class 6", male: 19, female: 37, total: 56, icon: <BookOpen size={48} className="text-indigo-600" /> },
-  { classId: 7, title: "Class 7", male: 28, female: 22, total: 50, icon: <NotebookText size={48} className="text-green-600" /> },
+  { classId: 1, title: "Class 6", male: 19, female: 37, total: 56, icon: <BookOpen size={48} className="text-indigo-600" /> },
+  { classId:  2, title: "Class 7", male: 28, female: 22, total: 50, icon: <NotebookText size={48} className="text-green-600" /> },
   { classId: 8, title: "Class 8", male: 23, female: 31, total: 54, icon: <PenTool size={48} className="text-pink-600" /> },
   { classId: 9, title: "Class 9", male: 23, female: 22, total: 45, icon: <Scroll size={48} className="text-yellow-600" /> },
   { classId: 10, title: "Class 10", male: 20, female: 22, total: 42, icon: <GraduationCap size={48} className="text-purple-600" /> },
@@ -16,7 +16,7 @@ export default function ResultsClasses() {
   return (
     <div className="max-w-7xl mx-auto py-10 px-6 mt-20 min-h-96">
       <h1 className="text-2xl font-bold text-center mb-8 mt-10">
-        🎓 Select Class – Exam {examId}
+        Select Class
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
