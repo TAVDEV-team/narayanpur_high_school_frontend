@@ -73,6 +73,7 @@ export default function StudentPortal() {
     previous,
   } = ListAPI("/nphs/classes/");
   console.log(class_meta);
+
   return (
     <div
       className="relative min-h-screen w-full bg-cover bg-center pt-20 px-4 sm:px-6 lg:px-8"
@@ -96,13 +97,13 @@ export default function StudentPortal() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {class_meta.map((cls) => (
           <Link
-            key={cls.name}
-            to={`/class/${cls.name}`}
+            key={cls.id}
+            to={`/class/${cls.id}`}
             className="aspect-square rounded-3xl shadow-lg border border-gray-300 flex flex-col items-center justify-center p-5 sm:p-6
                hover:shadow-2xl hover:-translate-y-2 transition-all duration-300
                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                bg-gradient-to-br from-white to-slate-300"
-            aria-label={`Open Class ${cls.name} dashboard`}
+            aria-label={`Open Class ${cls.id} dashboard`}
           >
             <div className="mb-4">
               <div className="p-4 rounded-full  shadow-inner">{cls.icon}</div>

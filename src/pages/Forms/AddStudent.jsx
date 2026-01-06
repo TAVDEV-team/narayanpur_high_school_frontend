@@ -229,7 +229,7 @@ const getValue = (name) => {
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 md:px-4 focus:ring-2 focus:ring-indigo-400 focus:outline-none text-sm md:text-base"
               >
-                {["science", "business", "humanities"].map((g) => (
+                {["science", "business studies", "humanities"].map((g) => (
                   <option key={g} value={g}>
                     {g.charAt(0).toUpperCase() + g.slice(1)}
                   </option>
@@ -263,7 +263,7 @@ const getValue = (name) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             { label: "Image", name: "account.image", type: "file" },
-            { label: "Roll Number", name: "roll_number", type: "number" },
+            { label: "Roll Number", name: "roll_number", type: "number",required: true },
             { label: "Date of Birth", name: "account.date_of_birth", type: "date", required: true },
             { label: "Mobile", name: "account.mobile", required: true },
             { label: "Address", name: "account.address", required: true },
