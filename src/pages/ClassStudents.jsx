@@ -8,31 +8,31 @@ import Loading from "../components/Loading";
 
 
 export default function ClassStudents({grade, group}) {
-let class_id;
+// let class_id;
 
-if (grade === '6') {
-  class_id = 1;
-} else if (grade === '7') {
-  class_id = 2;
-} else if (grade === '8') {
-  class_id = 3;
-} else if (grade === '9') {
-  if (group === 'science') {
-    class_id = 4;
-  } else if (group === 'business') {
-    class_id = 6;
-  } else if (group === 'humanities') {
-    class_id = 8;
-  }
-} else if (grade === '10') {
-  if (group === 'science') {
-    class_id = 5;
-  } else if (group === 'business') {
-    class_id = 7;
-  } else if (group === 'humanities') {
-    class_id = 9;
-  }
-}
+// if (grade === '6') {
+//   class_id = 1;
+// } else if (grade === '7') {
+//   class_id = 2;
+// } else if (grade === '8') {
+//   class_id = 3;
+// } else if (grade === '9') {
+//   if (group === 'science') {
+//     class_id = 4;
+//   } else if (group === 'business') {
+//     class_id = 6;
+//   } else if (group === 'humanities') {
+//     class_id = 8;
+//   }
+// } else if (grade === '10') {
+//   if (group === 'science') {
+//     class_id = 5;
+//   } else if (group === 'business') {
+//     class_id = 7;
+//   } else if (group === 'humanities') {
+//     class_id = 9;
+//   }
+// }
 
     const {
     data: students,
@@ -42,8 +42,11 @@ if (grade === '6') {
     setPage,
     next,
     previous,
-  } = ListAPI(`nphs/classes/${class_id}/students/`);
+  } =ListAPI(
+  `/nphs/classes/${grade}/students/${grade >= 9 ? `?group=${group}` : ""}`
+);
 
+  
 
   if (loading) {
     return <Loading message="Students" />;
