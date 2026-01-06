@@ -1,57 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api/api";
-import Loading from "../components/Loading";
 import Pagination from "../components/Pagination";
-
-export default function ClassStudents() {
-  const { grade, group } = useParams();
-
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const [page, setPage] = useState(1);
-  const [next, setNext] = useState(null);
-  const [previous, setPrevious] = useState(null);
+import {ListAPI} from "../api/ListAPI";
+import { Import } from "lucide-react";
+import Loading from "../components/Loading";
 
 
-  const fetchStudents = async () => {
-    setLoading(true);
-    try {
-      const res = await API.get(`/user/students/?page=${page}`);
+export default function ClassStudents({grade, group}) {
+// let class_id;
 
-      //save pagination info
-      setNext(res.data.next);
-      setPrevious(res.data.previous);
+// if (grade === '6') {
+//   class_id = 1;
+// } else if (grade === '7') {
+//   class_id = 2;
+// } else if (grade === '8') {
+//   class_id = 3;
+// } else if (grade === '9') {
+//   if (group === 'science') {
+//     class_id = 4;
+//   } else if (group === 'business') {
+//     class_id = 6;
+//   } else if (group === 'humanities') {
+//     class_id = 8;
+//   }
+// } else if (grade === '10') {
+//   if (group === 'science') {
+//     class_id = 5;
+//   } else if (group === 'business') {
+//     class_id = 7;
+//   } else if (group === 'humanities') {
+//     class_id = 9;
+//   }
+// }
 
-      //filter ONLY current page results
-      let filtered;
+    const {
+    data: students,
+    loading,
+    error,
+    page,
+    setPage,
+    next,
+    previous,
+  } =ListAPI(
+  `/nphs/classes/${grade}/students/${grade >= 9 ? `?group=${group}` : ""}`
+);
 
-      if (group && group !== "all") {
-        filtered = res.data.results.filter(
-          (student) =>
-            student.aclass.startsWith(`Class ${grade}`) &&
-            student.group &&
-            student.group.toLowerCase() === group.toLowerCase()
-        );
-      } else {
-        filtered = res.data.results.filter((student) =>
-          student.aclass.startsWith(`Class ${grade}`)
-        );
-      }
-
-      setStudents(filtered);
-    } catch (err) {
-      console.error("Error fetching students:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //re-fetch when grade, group, or page changes
-  useEffect(() => {
-    fetchStudents();
-  }, [grade, group, page]);
+  
 
   if (loading) {
     return <Loading message="Students" />;
@@ -60,7 +55,7 @@ export default function ClassStudents() {
   return (
    <div className="min-h-screen flex flex-col bg-sky-50 mt-16">
   <div className="flex-1 py-10 px-4">
-    {/* Header */}
+
     <h1 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center bg-blue-950 rounded-xl py-2 px-8 shadow-lg mt-5">
       Class {grade}
       {group ? ` - ${group.charAt(0).toUpperCase() + group.slice(1)}` : ""} 
@@ -69,7 +64,7 @@ export default function ClassStudents() {
     {/* Empty state */}
     {students.length === 0 ? (
       <p className="text-gray-500 text-center text-lg">
-        No students found {group ? `for ${group}` : ""}.
+        {/* No students found {group ? `for ${group}` : ""}. */}
       </p>
     ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,7 +76,7 @@ export default function ClassStudents() {
 
             {/* Student Image */}
             <img
-              src={student.image || "https://ysrjaxciwztrqvwwjzmp.supabase.co/storage/v1/object/public/media/Accounts/default.png"}
+              src={student.image || " "}
               alt={student.full_name }
               className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-full border-4 border-indigo-200"
             />

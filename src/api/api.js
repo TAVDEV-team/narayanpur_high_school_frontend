@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "https://narayanpur-high-school.onrender.com/api",
-  // baseURL: "http://127.0.0.1:8000/api",
+  // baseURL: "http://127.0.0.1:/8000/api",
 });
 
 // 🔹 Attach accessToken on every request
