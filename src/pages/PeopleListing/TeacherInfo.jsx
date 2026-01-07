@@ -28,8 +28,8 @@ export default function TeacherInformation() {
                   {teacher.religion && (
                     <p><b>Religion:</b> {teacher.religion}</p>
                   )}
-                  {teacher.base_subject_detail && (
-                    <p><b>Subject:</b> {teacher.base_subject_detail.name}</p>
+                  {teacher.subject && (
+                    <p><b>Subject:</b> {teacher.subject}</p>
                   )}
                 </>
               }

@@ -19,7 +19,7 @@ export default function PersonCard({ account, extra = null, rightExtra = null })
         </h2>
         {account?.user?.email && (
           <p className="text-gray-600 text-sm sm:text-base break-words">
-            📧 {account.user.email}
+            📧 {account.email}
           </p>
         )}
         {account?.mobile && (
