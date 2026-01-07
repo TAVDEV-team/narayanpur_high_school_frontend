@@ -13,6 +13,7 @@ export default function TeacherInformation() {
     next,
     previous,
   } = ListAPI("/user/teachers/");
+  console.log(teachers)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -21,7 +22,7 @@ export default function TeacherInformation() {
           {teachers.map((teacher) => (
             <PersonCard
               key={teacher.id}
-              account={teacher.account}
+              account={teacher}
               rightExtra={
                 <>
                   {teacher.religion && (
