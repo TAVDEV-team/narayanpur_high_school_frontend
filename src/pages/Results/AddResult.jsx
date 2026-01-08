@@ -1,65 +1,57 @@
 import React, { useState, useEffect } from "react";
 import API from "../../api/api";
+import {ListAPI} from "../../api/ListAPI"
+// import {Loading} from "../../components/Loading"
 import Loading from "../../components/Loading";
-
 
 export default function AddResult() {
   // Dropdown data
-  const [classes, setClasses] = useState([]);
-  const [exams, setExams] = useState([]);
+  // const [exams, setExams] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [students, setStudents] = useState([]);
  const [existingResultId, setExistingResultId] = useState(null);
 
 
 
+
+
+  const {
+    data:classes,
+    loading:class_loading,
+    error:class_error,
+  }= ListAPI("/nphs/classes/")
+
+    const {
+    data:exams,
+    loading:exam_loading,
+    error:exam_error,
+  }= ListAPI("/result/exam/")
+
+  
   // Form state
   const [form, setForm] = useState({
     aclass: "",
     exam: "",
     subject: "",
     student: "",
-    mcq: "",
-    practical: "",
-    written: "",
+    mcq: "0",
+    practical: "0",
+    written: "0",
   });
 
-  // Loading & message states
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
-
-  // Fetch classes + exams (only once)
-  useEffect(() => {
-    const fetchDropdowns = async () => {
-      setLoading(true);
-      try {
-        const [classesRes, examsRes] = await Promise.all([
-          API.get("/nphs/classes/"),
-          API.get("/result/exam/"),
-          // API.get("/nphs/subject/")
-        ]);
-        setClasses(classesRes.data);
-        setExams(examsRes.data);
-        // setSubjects(sub.data);
-      } catch (error) {
-        setMessage({ type: "error", text: "⚠️ Failed to fetch dropdown data." });
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDropdowns();
-  }, []);
 
   // Fetch students + subjects when class is selected
   useEffect(() => {
+    
     if (!form.aclass) return; // skip if no class selected
+    
     const fetchClassDetails = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const res = await API.get(
           `/nphs/classes/${form.aclass}/`
         );
-        console.log(res.data)
         setStudents(res.data.students || []);
         setSubjects(res.data.all_subjects || []); // ✅ subjects come from here
       } catch (error) {
@@ -67,13 +59,15 @@ export default function AddResult() {
         setStudents([]);
         setSubjects([]);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchClassDetails();
   }, [form.aclass]);
 
  useEffect(() => {
+
+  console.log("Checking result effect", form.exam, )
   if (!form.exam || !form.subject || !form.student) return;
 
   const checkResult = async () => {
@@ -82,8 +76,8 @@ export default function AddResult() {
         `/result/?exam=${form.exam}&subject=${form.subject}&student=${form.student}`
       );
 
-      if (res.data.length > 0) {
-        const result = res.data[0]; // existing result
+      if (res.data.results.length > 0) {
+        const result = res.data.results[0];
         setExistingResultId(result.id);
         setForm({
           ...form,
@@ -93,7 +87,7 @@ export default function AddResult() {
         });
       } else {
         setExistingResultId(null); // no previous result
-        setForm({ ...form, mcq: "", written: "", practical: "" });
+        setForm({ ...form, mcq: "0", written: "0", practical: "0" });
       }
     } catch (err) {
       console.error("Failed to check result:", err);
@@ -114,7 +108,7 @@ export default function AddResult() {
   // Submit form
 const handleSubmit = async (e) => {
   e.preventDefault();
-  setLoading(true);
+  // setLoading(true);
   setMessage({ type: "", text: "" });
 
   try {
@@ -127,7 +121,7 @@ const handleSubmit = async (e) => {
       practical: Number(form.practical),
       written: Number(form.written),
     };
-
+    console.log(payload)
     if (existingResultId) {
       // Update existing result
       const res = await API.patch(`/result/${existingResultId}/`, payload);
@@ -144,7 +138,7 @@ const handleSubmit = async (e) => {
       const res = await API.post("/result/", payload);
       setMessage({ type: "success", text: "✅ Result added successfully!" });
       // Clear form for next entry
-      setForm({ aclass: "", exam: "", subject: "", student: "", mcq: "", practical: "", written: "" });
+      setForm({ aclass: payload.aclass, exam: payload.exam, subject: payload.subject, student: "", mcq: "0", practical: "0", written: "0" });
       setStudents([]);
       setSubjects([]);
     }
@@ -155,7 +149,7 @@ const handleSubmit = async (e) => {
       setMessage({ type: "error", text: error.message });
     }
   } finally {
-    setLoading(false);
+    // setLoading(false);
   }
 };
 
@@ -242,8 +236,8 @@ const handleSubmit = async (e) => {
               {students.map((st) => (
                 <option key={st.id} value={st.id}>
                   {st.roll_number
-                    ? `${st.roll_number} - ${st.account.full_name}`
-                    : st.account.full_name}
+                    ? `${st.roll_number} - ${st.full_name}`
+                    : st.full_name}
                 </option>
               ))}
             </select>
@@ -295,16 +289,16 @@ const handleSubmit = async (e) => {
           {/* Submit / Update button */}
 <button
   type="submit"
-  disabled={loading || !form.aclass || !form.exam || !form.subject || !form.student}
+  disabled={class_loading || !form.aclass || !form.exam || !form.subject || !form.student}
   className={`w-full py-2 rounded-lg font-semibold text-white transition ${
-    loading
+    class_loading
       ? "bg-gray-400 cursor-not-allowed"
       : existingResultId
       ? "bg-yellow-600 hover:bg-yellow-700"
       : "bg-blue-950 hover:bg-blue-900"
   }`}
 >
-  {loading ? <Loading message="Submitting..." /> : existingResultId ? "Update Result" : "Submit Result"}
+  {class_loading ? <Loading message="Submitting..." /> : existingResultId ? "Update Result" : "Submit Result"}
 </button>
 
 
