@@ -37,6 +37,33 @@ export default function ClassResult() {
     FAILED: "text-red-600",
     ABSENT: "text-gray-600",
   };
+const handleDownload = async (studentId) => {
+  try {
+    const response = await API.get(
+      `/result/card_pdf/${examId}/${classId}/${studentId}/`,
+      { responseType: "blob" }
+    );
+
+    const blob = new Blob([response.data], {
+      type: "application/pdf",
+    });
+
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `result_card_${studentId}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("PDF download failed", err);
+    alert("Failed to download PDF");
+  }
+};
+
 
   useEffect(() => {
     API
@@ -153,18 +180,16 @@ export default function ClassResult() {
                 >
                   {res.status}
                 </td>
-                <td className="border px-4 py-2 text-center">
-            <a
-              href={`${API.defaults.baseURL}/result/card_pdf/${examId}/${classId}/${res.id}/`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg shadow-md"
-            >
-              <FileDown className="w-4 h-4" />
-              Download
-            </a>
-
+              <td className="border px-4 py-2 text-center">
+                  <button
+                    onClick={() => handleDownload(res.id)}
+                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg shadow-md"
+                  >
+                    <FileDown className="w-4 h-4" />
+                    Download
+                  </button>
                 </td>
+
               </tr>
             ))}
           </tbody>

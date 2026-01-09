@@ -14,12 +14,11 @@ export default function AddResult() {
 
 
 
-
-  const {
-    data:classes,
-    loading:class_loading,
-    error:class_error,
-  }= ListAPI("/nphs/classes/")
+  // const {
+  //   data:classes,
+  //   loading:class_loading,
+  //   error:class_error,
+  // }= ListAPI("/nphs/classes/")
 
     const {
     data:exams,
@@ -27,7 +26,47 @@ export default function AddResult() {
     error:exam_error,
   }= ListAPI("/result/exam/")
 
-  
+
+  const classes= [
+    {
+      "id": 1,
+      "name": "6",
+    },
+    {
+      "id": 2,
+      "name": "7",
+    },
+    {
+      "id": 3,
+      "name": "8",
+    },
+    {
+      "id": 8,
+      "name": "9 humanities",
+    },
+    {
+      "id": 4,
+      "name": "9 science",
+    },
+    {
+      "id": 6,
+      "name": "9 business",
+
+    },
+    {
+      "id": 9,
+      "name": "10 humanities",
+    },
+    {
+      "id": 5,
+      "name": "10 science",
+    },
+    {
+      "id": 7,
+      "name": "10 business",
+    }
+  ]
+
   // Form state
   const [form, setForm] = useState({
     aclass: "",
@@ -289,16 +328,17 @@ const handleSubmit = async (e) => {
           {/* Submit / Update button */}
 <button
   type="submit"
-  disabled={class_loading || !form.aclass || !form.exam || !form.subject || !form.student}
+  disabled={!form.aclass || !form.exam || !form.subject || !form.student}
   className={`w-full py-2 rounded-lg font-semibold text-white transition ${
-    class_loading
-      ? "bg-gray-400 cursor-not-allowed"
-      : existingResultId
-      ? "bg-yellow-600 hover:bg-yellow-700"
-      : "bg-blue-950 hover:bg-blue-900"
+
+      // "bg-gray-400 cursor-not-allowed"
+      // : existingResultId
+      // ? "bg-yellow-600 hover:bg-yellow-700"
+      // : 
+      "bg-blue-950 hover:bg-blue-900"
   }`}
 >
-  {class_loading ? <Loading message="Submitting..." /> : existingResultId ? "Update Result" : "Submit Result"}
+ {exam_loading ? <Loading message="Submitting..." /> : existingResultId ? "Update Result" : "Submit Result"}
 </button>
 
 
