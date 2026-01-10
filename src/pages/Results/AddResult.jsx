@@ -10,10 +10,14 @@ export default function AddResult() {
   const [subjects, setSubjects] = useState([]);
   // const [students, setStudents] = useState([]);
  const [existingResultId, setExistingResultId] = useState(null);
+ const [submitLoading, setSubmitLoading] = useState(false);
+const [resultLoading, setResultLoading] = useState(false);
 
 const [rollNumber, setRollNumber] = useState("");
 const [resolvedStudent, setResolvedStudent] = useState(null);
 const [studentStatus, setStudentStatus] = useState("idle"); 
+const isUpdate = Boolean(existingResultId);
+
 // idle | loading | found | not_found | error
 
 
@@ -71,6 +75,7 @@ const [studentStatus, setStudentStatus] = useState("idle");
     }
   ]
 
+  
   // Form state
   const [form, setForm] = useState({
     aclass: "",
@@ -106,37 +111,55 @@ const [studentStatus, setStudentStatus] = useState("idle");
     fetchClassDetails();
   }, [form.aclass]);
 
- useEffect(() => {
 
-  console.log("Checking result effect", form.exam, )
+
+useEffect(() => {
   if (!form.exam || !form.subject || !form.student) return;
+
+  let cancelled = false;
 
   const checkResult = async () => {
     try {
+      setResultLoading(true); // ✅ START loading
+
       const res = await API.get(
         `/result/?exam=${form.exam}&subject=${form.subject}&student=${form.student}`
       );
 
+      if (cancelled) return;
+
       if (res.data.results.length > 0) {
         const result = res.data.results[0];
         setExistingResultId(result.id);
-        setForm({
-          ...form,
+        setForm((prev) => ({
+          ...prev,
           mcq: result.mcq,
           written: result.written,
           practical: result.practical,
-        });
+        }));
       } else {
-        setExistingResultId(null); // no previous result
-        setForm({ ...form, mcq: "0", written: "0", practical: "0" });
+        setExistingResultId(null);
+        setForm((prev) => ({
+          ...prev,
+          mcq: "0",
+          written: "0",
+          practical: "0",
+        }));
       }
     } catch (err) {
-      console.error("Failed to check result:", err);
+      if (!cancelled) console.error("Failed to check result:", err);
+    } finally {
+      if (!cancelled) setResultLoading(false); // ✅ STOP loading
     }
   };
 
   checkResult();
+
+  return () => {
+    cancelled = true;
+  };
 }, [form.exam, form.subject, form.student]);
+
 
 
 
@@ -149,7 +172,8 @@ const [studentStatus, setStudentStatus] = useState("idle");
   // Submit form
 const handleSubmit = async (e) => {
   e.preventDefault();
-  // setLoading(true);
+
+  setSubmitLoading(true);   // ✅ THIS WAS MISSING
   setMessage({ type: "", text: "" });
 
   try {
@@ -162,37 +186,24 @@ const handleSubmit = async (e) => {
       practical: Number(form.practical),
       written: Number(form.written),
     };
-    console.log(payload)
+
     if (existingResultId) {
-      // Update existing result
-      const res = await API.patch(`/result/${existingResultId}/`, payload);
+      await API.patch(`/result/${existingResultId}/`, payload);
       setMessage({ type: "success", text: "✅ Result updated successfully!" });
-      // Update form to reflect latest values
-      setForm((prev) => ({
-        ...prev,
-        mcq: res.data.mcq,
-        practical: res.data.practical,
-        written: res.data.written,
-      }));
     } else {
-      // Create new result
-      const res = await API.post("/result/", payload);
+      await API.post("/result/", payload);
       setMessage({ type: "success", text: "✅ Result added successfully!" });
-      // Clear form for next entry
-      setForm({ aclass: payload.aclass, exam: payload.exam, subject: payload.subject, student: "", mcq: "0", practical: "0", written: "0" });
-      // setStudents([]);
-      setSubjects([]);
     }
   } catch (error) {
-    if (error.response) {
-      setMessage({ type: "error", text: JSON.stringify(error.response.data) });
-    } else {
-      setMessage({ type: "error", text: error.message });
-    }
+    setMessage({
+      type: "error",
+      text: error.response ? JSON.stringify(error.response.data) : error.message,
+    });
   } finally {
-    // setLoading(false);
+    setSubmitLoading(false); // ✅ MUST be here
   }
 };
+
 useEffect(() => {
   if (!form.aclass || !rollNumber) return;
 
@@ -343,6 +354,13 @@ useEffect(() => {
           )}
 
 
+         {resultLoading && (
+  <div className="flex items-center justify-center gap-2 text-sm text-blue-600">
+    <span className="h-3 w-3 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+    Loading results…
+  </div>
+)}
+
           {/* Score inputs */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
@@ -352,11 +370,14 @@ useEffect(() => {
                 name="mcq"
                 value={form.mcq}
                 onChange={handleChange}
+                disabled={resultLoading}
                 className="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
                 placeholder="Enter MCQ Marks"
                 required
               />
             </div>
+            
+            
 
             <div>
               <label className="block text-gray-700 font-medium mb-1">Practical Marks</label>
@@ -365,6 +386,7 @@ useEffect(() => {
                 name="practical"
                 value={form.practical}
                 onChange={handleChange}
+                disabled={resultLoading}
                 className="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
                 placeholder="Enter Practical Marks"
                 required
@@ -378,6 +400,7 @@ useEffect(() => {
                 name="written"
                 value={form.written}
                 onChange={handleChange}
+                disabled={resultLoading}
                 className="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
                 placeholder="Enter Written Marks"
                 required
@@ -389,20 +412,19 @@ useEffect(() => {
           {/* Submit / Update button */}
 <button
   type="submit"
-  disabled={!form.aclass || !form.exam || !form.subject || !form.student}
-  className={`w-full py-2 rounded-lg font-semibold text-white transition ${
-
-      // "bg-gray-400 cursor-not-allowed"
-      // : existingResultId
-      // ? "bg-yellow-600 hover:bg-yellow-700"
-      // : 
-      "bg-blue-950 hover:bg-blue-900"
+  disabled={submitLoading}
+  className={`w-full h-11 rounded-lg font-semibold text-white transition ${
+    submitLoading
+      ? "bg-gray-400 cursor-not-allowed"
+      : isUpdate
+      ? "bg-yellow-600 hover:bg-yellow-700"
+      : "bg-blue-950 hover:bg-blue-900"
   }`}
 >
- {exam_loading ? <Loading message="Submitting..." /> : existingResultId ? "Update Result" : "Submit Result"}
+  {submitLoading
+    ? isUpdate ? "Updating..." : "Submitting..."
+    : isUpdate ? "Update Result" : "Submit Result"}
 </button>
-
-
 
 
           {/* Feedback message */}
