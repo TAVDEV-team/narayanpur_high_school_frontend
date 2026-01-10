@@ -180,7 +180,7 @@ const handleSubmit = async (e) => {
       setMessage({ type: "success", text: "✅ Result added successfully!" });
       // Clear form for next entry
       setForm({ aclass: payload.aclass, exam: payload.exam, subject: payload.subject, student: "", mcq: "0", practical: "0", written: "0" });
-      setStudents([]);
+      // setStudents([]);
       setSubjects([]);
     }
   } catch (error) {
