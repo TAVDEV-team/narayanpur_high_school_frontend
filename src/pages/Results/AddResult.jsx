@@ -8,9 +8,13 @@ export default function AddResult() {
   // Dropdown data
   // const [exams, setExams] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [students, setStudents] = useState([]);
+  // const [students, setStudents] = useState([]);
  const [existingResultId, setExistingResultId] = useState(null);
 
+const [rollNumber, setRollNumber] = useState("");
+const [resolvedStudent, setResolvedStudent] = useState(null);
+const [studentStatus, setStudentStatus] = useState("idle"); 
+// idle | loading | found | not_found | error
 
 
 
@@ -91,11 +95,9 @@ export default function AddResult() {
         const res = await API.get(
           `/nphs/classes/${form.aclass}/`
         );
-        setStudents(res.data.students || []);
         setSubjects(res.data.all_subjects || []); // ✅ subjects come from here
       } catch (error) {
-        setMessage({ type: "error", text: "⚠️ Failed to fetch students/subjects for this class." });
-        setStudents([]);
+        setMessage({ type: "error", text: "⚠️ Failed to fetch subjects for this class." });
         setSubjects([]);
       } finally {
         // setLoading(false);
@@ -191,6 +193,49 @@ const handleSubmit = async (e) => {
     // setLoading(false);
   }
 };
+useEffect(() => {
+  if (!form.aclass || !rollNumber) return;
+
+  const rn = Number(rollNumber);
+  if (Number.isNaN(rn)) return;
+
+  let cancelled = false;
+
+  const lookupStudent = async () => {
+    try {
+      setStudentStatus("loading");
+
+      const res = await API.get(
+        `/nphs/classes/${form.aclass}/students/lookup/?roll_number=${rn}`
+      );
+
+      if (cancelled) return;
+
+      if (res.data.length === 0) {
+        setResolvedStudent(null);
+        setStudentStatus("not_found");
+        setForm((prev) => ({ ...prev, student: "" }));
+        return;
+      }
+
+      const student = res.data[0];
+      setResolvedStudent(student);
+      setForm((prev) => ({ ...prev, student: student.id }));
+      setStudentStatus("found");
+    } catch (err) {
+      if (cancelled) return;
+      setStudentStatus("error");
+    }
+  };
+
+  const timeout = setTimeout(lookupStudent, 400); // debounce
+
+  return () => {
+    cancelled = true;
+    clearTimeout(timeout);
+  };
+}, [form.aclass, rollNumber]);
+
 
 
   return (
@@ -262,25 +307,41 @@ const handleSubmit = async (e) => {
 
           {/* Student dropdown */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Student</label>
-            <select
-              name="student"
-              value={form.student}
-              onChange={handleChange}
+            <label className="block text-gray-700 font-medium mb-1">
+              Roll Number
+            </label>
+            <input
+              type="number"
+              value={rollNumber}
+              onChange={(e) => {
+                setRollNumber(e.target.value);
+                setResolvedStudent(null);
+                setStudentStatus("idle");
+                setForm((prev) => ({ ...prev, student: "" }));
+                setExistingResultId(null);
+              }}
               className="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300"
-              required
+              placeholder="Enter roll number"
               disabled={!form.aclass}
-            >
-              <option value="">Select Student</option>
-              {students.map((st) => (
-                <option key={st.id} value={st.id}>
-                  {st.roll_number
-                    ? `${st.roll_number} - ${st.full_name}`
-                    : st.full_name}
-                </option>
-              ))}
-            </select>
+              required
+            />
           </div>
+          {studentStatus === "loading" && (
+            <p className="text-sm text-blue-600 mt-1">Searching student…</p>
+          )}
+
+          {studentStatus === "not_found" && (
+            <p className="text-sm text-red-600 mt-1">
+              No student found with this roll number in this class.
+            </p>
+          )}
+
+          {studentStatus === "found" && resolvedStudent && (
+            <p className="text-sm text-green-700 mt-1">
+            {resolvedStudent.roll_number} : {resolvedStudent.full_name}
+            </p>
+          )}
+
 
           {/* Score inputs */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
