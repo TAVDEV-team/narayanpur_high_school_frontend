@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import SavePDF from "../components/buttons/save_pdf"; 
+import SavePDF from "../components/buttons/SavePDF"; 
 import API from "../api/api";
 
 import {
