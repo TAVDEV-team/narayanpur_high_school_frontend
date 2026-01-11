@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 // import { getAuthHeaders } from '../services/api';
 import { ArrowDownCircle, ArrowUpCircle, Printer, Wallet } from "lucide-react";
-import SavePDF from "../components/buttons/save_pdf"; 
+import SavePDF from "../components/buttons/SavePDF"; 
 // --- Constants & Utils ---
 import API from "../api/api"
 import Loading from '../components/Loading';
