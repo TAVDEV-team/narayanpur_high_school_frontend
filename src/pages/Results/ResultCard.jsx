@@ -18,14 +18,52 @@ export default function ResultCard() {
 
   const resultRef = useRef(null);
 
+const classes= [
+    {
+      "id": 1,
+      "name": "6",
+    },
+    {
+      "id": 2,
+      "name": "7",
+    },
+    {
+      "id": 3,
+      "name": "8",
+    },
+    {
+      "id": 8,
+      "name": "9 humanities",
+    },
+    {
+      "id": 4,
+      "name": "9 science",
+    },
+    {
+      "id": 6,
+      "name": "9 business",
 
-  const classes = [
-    { id: 1, name: "6" },
-    { id: 2, name: "7" },
-    { id: 3, name: "8" },
-    { id: 4, name: "9 Science" },
-    { id: 5, name: "10 Science" },
-  ];
+    },
+    {
+      "id": 9,
+      "name": "10 humanities",
+    },
+    {
+      "id": 5,
+      "name": "10 science",
+    },
+    {
+      "id": 7,
+      "name": "10 business",
+    }
+  ]
+  // const classes = [
+  //   { id: 1, name: "6" },
+  //   { id: 2, name: "7" },
+  //   { id: 3, name: "8" },
+  //   { id: 4, name: "9 Science" },
+  //   { id: 5, name: "10 Science" },
+  // ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +77,7 @@ export default function ResultCard() {
       const studentRes = await API.get(
         `/nphs/classes/${aclass}/students/lookup/?roll_number=${roll}`
       );
+      console.log(studentRes)
 
       if (!studentRes.data.length) {
         setStatus("error");
@@ -47,11 +86,11 @@ export default function ResultCard() {
       }
 
       const studentId = studentRes.data[0].id;
-
+      console.log(studentId, aclass, exam)
       const res = await API.get(
-        `/result/card/${aclass}/${exam}/${studentId}/`
+        `/result/card/${exam}/${aclass}/${studentId}/`
       );
-
+      console.log(res)
       setResult(res.data);
       setStatus("success");
     } catch (err) {
@@ -165,7 +204,7 @@ export default function ResultCard() {
               <Summary
                 label="Percentage"
                 value={`${result.percentage.toFixed(2)}%`}
-                icon={<Percent className="w-5 h-5 mx-auto" />}
+                // icon={<Percent className="w-5 h-5 mx-auto" />}
               />
               <Summary
                 label="Status"
@@ -214,7 +253,7 @@ export default function ResultCard() {
 
             {/* Rank */}
             <div className="mt-6 text-center font-bold text-indigo-600 flex items-center justify-center gap-2">
-              <Hash className="w-5 h-5" />
+              {/* <Hash className="w-5 h-5" /> */}
               Class Rank: {result.class_rank}
             </div>
           </div>

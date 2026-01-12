@@ -32,7 +32,8 @@ import RoutineForm from './pages/RoutineForm';
 import AddStaffs from './pages/Forms/AddStaffs';
 import ChangePassword from './pages/Forms/Updates/ChangePassword';
 import AddMessage from './pages/Forms/MessagesForm';
-
+import Results from './pages/Results/Results';
+import ResultCard from "./pages/Results/ResultCard";
 
 
 function App() {
@@ -68,7 +69,14 @@ function App() {
           <Route path="/add-result" element={<AddResult />} />
            <Route path="/teacher" element={<TeacherInformation />} />
            <Route path="/staffs" element={<StaffsInformation />} />
-            <Route path="/results" element={<ExamCard />} />
+            <Route path="/result" element={<ExamCard />} />
+            {/* <Route path="/results" element={<Results/>} /> */}
+
+            <Route
+  path="/results"
+  element={<ResultCard />}
+/>
+
         <Route path="/results/:examId" element={<ResultsClasses />} />
         <Route path="/results/:examId/:classId" element={<ResultsTable />} />
         <Route path="routine" element={<Routine />} />
