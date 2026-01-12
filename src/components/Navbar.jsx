@@ -101,7 +101,7 @@ useEffect(() => {
   // Menu items for logged-in users
   const authMenuItems = [
     { label: "Students", to: "/portal" }, 
-    { label: "Result", to: "/results" },
+    { label: "Result", to: "/results" }, 
     { label: "Profile", to: "/profile" },
     { label: "Gallery", to: "/gallery" },
     { label: "Contact", to: "/contact" },
@@ -109,7 +109,8 @@ useEffect(() => {
 
   // Menu items for guests
   const guestMenuItems = [
-    { label: "Students", to: "/portal" }, 
+    { label: "Students", to: "/portal" },
+    { label: "Result", to: "/results" }, 
     { label: "Login", to: "/login" },
     { label: "Gallery", to: "/gallery" },
     { label: "Contact", to: "/contact" },
