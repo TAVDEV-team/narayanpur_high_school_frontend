@@ -196,7 +196,8 @@ const classes= [
             </div>
 
             {/* Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8 text-center">
+
               <Summary
                 label="Total Marks"
                 value={`${result.total_obtained}/${result.total_possible}`}
@@ -215,6 +216,12 @@ const classes= [
                     : "text-green-600"
                 }
               />
+              <Summary
+              label="Class Rank"
+              value={result.class_rank}
+              color="text-indigo-600"
+            />
+
             </div>
 
             {/* Table */}
@@ -252,10 +259,10 @@ const classes= [
             </div>
 
             {/* Rank */}
-            <div className="mt-6 text-center font-bold text-indigo-600 flex items-center justify-center gap-2">
+            {/* <div className="mt-6 text-center font-bold text-indigo-600 flex items-center justify-center gap-2"> */}
               {/* <Hash className="w-5 h-5" /> */}
-              Class Rank: {result.class_rank}
-            </div>
+              {/* Class Rank: {result.class_rank} */}
+            {/* </div> */}
           </div>
         )}
       </div>
