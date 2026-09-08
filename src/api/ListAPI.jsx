@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "./api";
-
+// this function is needed where the results are in lists
 export function ListAPI(endpoint) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
