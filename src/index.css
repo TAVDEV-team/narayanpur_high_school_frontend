@@ -4,3 +4,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Teachers Message Carousel */
+
+.teachers-message-swiper {
+  width: 100%;
+  overflow: visible;
+}
+
+/* Pagination */
+
+.teachers-message-swiper .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.teachers-message-swiper .swiper-pagination-bullet {
+  opacity: 0.5;
+}
+
+.teachers-message-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+/* Navigation arrows */
+
+.teachers-message-swiper .swiper-button-prev,
+.teachers-message-swiper .swiper-button-next {
+  width: 42px;
+  height: 42px;
+}
+
+.teachers-message-swiper .swiper-button-prev::after,
+.teachers-message-swiper .swiper-button-next::after {
+  font-size: 18px;
+}
+
+/* Mobile */
+
+@media (max-width: 767px) {
+  .teachers-message-swiper .swiper-button-prev,
+  .teachers-message-swiper .swiper-button-next {
+    display: none;
+  }
+
+  .teachers-message-swiper {
+    padding-bottom: 10px;
+  }
+}
+
+/* Very small phones */
+
+@media (max-width: 400px) {
+  .teachers-message-swiper .swiper-slide {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
