@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import CardHeader from "../../components/Titles/CardHeads";
 
 export default function WelcomeMessage() {
   const sectionRef = useRef(null);
@@ -32,22 +33,15 @@ export default function WelcomeMessage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section heading */}
-        <div
-          className={`max-w-3xl mb-12 lg:mb-16 transition-all duration-700 ease-out ${
-            isVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
+        <div 
+          className={`max-w-3xl mb-12 lg:mb-16 transition-all duration-700 ease-out ${ 
+            isVisible 
+              ? "opacity-100 translate-y-0" 
+              : "opacity-0 translate-y-8" 
+          }`} 
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-blue-950 leading-tight">
-            Discover
-            <br />
-            <span className="text-gray-600">
-              Narayanpur High School
-            </span>
-          </h2>
+          <CardHeader text="Discover Narayanpur High School" />
         </div>
-
         {/* Main content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
@@ -104,7 +98,7 @@ export default function WelcomeMessage() {
             </p>
 
             <p className="mt-7 text-lg sm:text-xl leading-relaxed text-gray-600">
-              Today, it accommodates thousands of students in Bangla 
+              Today, it accommodates hundreds of students in Bangla 
               versions, housed in multiple multi-storied buildings. The school was
               founded with the vision of providing quality education and has grown
               from a small setup into a fully established institution, now educating
