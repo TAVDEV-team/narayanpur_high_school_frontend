@@ -30,7 +30,6 @@ export default function MessageCarousel() {
 
     fetchMessages();
   }, []);
-
   return (
     <section className="w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
@@ -50,7 +49,7 @@ export default function MessageCarousel() {
               dynamicBullets: true,
             }}
             autoplay={{
-              delay: 7000,
+              delay: 5000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
@@ -84,8 +83,9 @@ export default function MessageCarousel() {
                   "
                 >
 
+                
                   {/* Teacher Image */}
-                  <div className="flex justify-center md:justify-start">
+                  <div className="flex justify-center md:justify-start md:ml-12 lg:ml-16">
                     <div
                       className="
                         relative
@@ -146,7 +146,7 @@ export default function MessageCarousel() {
                   </div>
 
                   {/* Message */}
-                  <div className="relative text-gray-900">
+                  <div className="relative text-gray-900 md:-ml-6 lg:-ml-8">
 
                     {/* Quote decoration */}
                     <div className="

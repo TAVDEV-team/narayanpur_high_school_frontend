@@ -5,7 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Teachers Message Carousel */
+/* Teachers Message */
 
 .teachers-message-swiper {
   width: 100%;
@@ -26,17 +26,53 @@
   opacity: 1;
 }
 
-/* Navigation arrows */
+/* Arrows */
 
 .teachers-message-swiper .swiper-button-prev,
 .teachers-message-swiper .swiper-button-next {
   width: 42px;
   height: 42px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .teachers-message-swiper .swiper-button-prev::after,
 .teachers-message-swiper .swiper-button-next::after {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Arrow position */
+
+.teachers-message-swiper .swiper-button-prev {
+  left: 5px;
+}
+
+.teachers-message-swiper .swiper-button-next {
+  right: 5px;
+}
+
+/* Hover */
+
+.teachers-message-swiper .swiper-button-prev:hover,
+.teachers-message-swiper .swiper-button-next:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.teachers-message-swiper .swiper-button-prev:hover::after,
+.teachers-message-swiper .swiper-button-next:hover::after {
+  color: #2563eb;
 }
 
 /* Mobile */
@@ -52,7 +88,7 @@
   }
 }
 
-/* Very small phones */
+/* Small screens */
 
 @media (max-width: 400px) {
   .teachers-message-swiper .swiper-slide {
