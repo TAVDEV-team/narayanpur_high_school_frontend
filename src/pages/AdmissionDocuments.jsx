@@ -3,45 +3,77 @@ import React from "react";
 
 export default function AdmissionDocuments() {
   const documents = [
-    "Birth Certificate – Photocopy of the student’s birth registration.",
-    "Transfer Certificate – From the previous school (if transferring).",
-    "Report Card / Progress Report – Last academic year’s result sheet.",
-    "Student’s Photographs – 2 recent passport-size color photographs.",
-    "Parent/Guardian’s National ID – Photocopy for verification.",
-    "Medical Fitness Certificate – From a registered doctor (if required).",
-    "Proof of Address – Utility bill copy / rent agreement (if applicable).",
+    {
+      title: "Birth Certificate Photocopy",
+      note: "( 2 copies)",
+      desc: "Photocopy of the student's birth registration.",
+    },
+    {
+      title: "Transfer Certificate",
+      desc: "From the previous school (if transferring).",
+    },
+    {
+      title: "Report Card / Progress Report",
+      desc: "Last academic year's result sheet.",
+    },
+    {
+      title: "Student's Photographs",
+      desc: "2 recent passport-size color photographs.",
+    },
+    {
+      title: "Parent/Guardian's National ID",
+      desc: "Photocopy for verification.",
+    },
+    {
+      title: "Medical Fitness Certificate",
+      desc: "From a registered doctor (if required).",
+    },
+    {
+      title: "Proof of Address",
+      desc: "Utility bill copy / rent agreement (if applicable).",
+    },
+  ];
+
+  const fees = [
+    { cls: "Class 6", monthly: 200, admission: 100, common: 1000, total: 1300 },
+    { cls: "Class 7", monthly: 250, admission: 150, common: 1000, total: 1400 },
+    { cls: "Class 8", monthly: 300, admission: 200, common: 1000, total: 1500 },
+    { cls: "Class 9", monthly: 350, admission: 250, common: 1000, total: 1600 },
+    { cls: "Class 10", monthly: 350, admission: 250, common: 1000, total: 1600 },
   ];
 
   return (
     <section className="bg-gray-50 py-10 sm:py-16 px-4 sm:px-6 md:px-20">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-12">
-        
+
         {/* Page Title */}
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
-          📄 Documents Required for Admission
+          📄 Admission
         </h1>
-        <p className="text-gray-600 text-center mb-8 font-medium sm:font-semibold text-sm sm:text-base md:text-lg">
-          To complete the admission process at <strong>Narayanpur High School</strong>,
-          please bring the following documents when submitting the admission form.
-        </p>
 
         {/* Admission Fee Structure */}
         <div className="mt-10">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
-            💰 Admission Fee for all classes
+            💰 Admission fees
           </h2>
 
-          <div className="space-y-4 text-gray-700 text-sm sm:text-base">
-            <p><strong>Class 6:</strong> Monthly Fee ৳200, Admission Fee ৳100, Common Fees ৳1000 — <strong>Total ৳1300</strong></p>
-            <p><strong>Class 7:</strong> Monthly Fee ৳250, Admission Fee ৳150, Common Fees ৳1000 — <strong>Total ৳1400</strong></p>
-            <p><strong>Class 8:</strong> Monthly Fee ৳300, Admission Fee ৳200, Common Fees ৳1000 — <strong>Total ৳1500</strong></p>
-            <p><strong>Class 9:</strong> Monthly Fee ৳350, Admission Fee ৳250, Common Fees ৳1000 — <strong>Total ৳1600</strong></p>
-            <p><strong>Class 10:</strong> Monthly Fee ৳350, Admission Fee ৳250, Common Fees ৳1000 — <strong>Total ৳1600</strong></p>
+          <div className="grid grid-cols-1 sm:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-gray-300 border border-gray-300 rounded-lg overflow-hidden text-sm sm:text-base">
+            {fees.map((fee, index) => (
+              <div key={index} className="p-4 text-gray-700">
+                <p className="font-bold text-gray-800 text-center border-b pb-2 mb-3">
+                  {fee.cls}
+                </p>
+                <p>Monthly fee = ৳{fee.monthly}</p>
+                <p>Admission fee = ৳{fee.admission}</p>
+                <p>Common fees = ৳{fee.common}</p>
+                <p className="font-bold border-t mt-2 pt-2">Total = ৳{fee.total}</p>
+              </div>
+            ))}
           </div>
 
           <div className="mt-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
             <h3 className="font-semibold text-blue-800 mb-2">
-              Common Fees (Applicable for All Classes)
+              Common fees includes (Applicable for all classes)
             </h3>
             <ul className="list-disc list-inside text-blue-700 space-y-1 text-sm sm:text-base">
               <li>Admission Form Fee: ৳100</li>
@@ -53,12 +85,17 @@ export default function AdmissionDocuments() {
               <li>Science Lab Fee: ৳75</li>
               <li>Red Crescent & BNCC Fee: ৳25</li>
             </ul>
+            <p className="mt-3 pt-3 border-t border-blue-200 font-bold text-blue-800">
+              Total: ৳1000
+            </p>
           </div>
         </div>
 
-
         {/* Documents List */}
-        <ul className="space-y-4 font-semibold mt-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 mt-16">
+          Documents required to Apply
+        </h2>
+        <ul className="space-y-4">
           {documents.map((item, index) => (
             <li
               key={index}
@@ -67,7 +104,15 @@ export default function AdmissionDocuments() {
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs sm:text-sm font-bold mb-1 sm:mb-0">
                 {index + 1}
               </span>
-              <p className="text-gray-700 text-sm sm:text-base">{item}</p>
+              <div>
+                <p className="text-gray-800 font-bold text-sm sm:text-base">
+                  {item.title}
+                  {item.note ? ` ${item.note}` : ""}
+                </p>
+                <p className="text-gray-600 text-sm sm:text-base font-normal">
+                  {item.desc}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
@@ -77,15 +122,29 @@ export default function AdmissionDocuments() {
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-3">
             🕒 Submission Details
           </h2>
-          <ul className="list-disc list-inside text-gray-700 space-y-1 text-sm sm:text-base">
+          <ul className="list-disc list-inside text-gray-700 space-y-4 text-sm sm:text-base">
             <li>
-              <strong>Where to Submit:</strong> School Office (Administration Desk)
+              <strong>Where to Submit:</strong>
+              <br />
+              <span className="ml-5">School Office (Administration Desk)</span>
             </li>
             <li>
-              <strong>Office Hours:</strong> Sunday – Thursday, 8:00 AM – 4:00 PM
+              <strong>Office Hours:</strong>
+              <br />
+              <span className="ml-5">Sunday – Thursday, 8:00 AM – 4:00 PM</span>
             </li>
             <li>
-              <strong>Contact:</strong> +8801819823733 | sn105409@gmail.com
+              <strong>Contact:</strong>
+              <br />
+              <span className="ml-5">
+                +8801819823733 |{" "}
+                <a
+                  href="mailto:sn105409@gmail.com"
+                  className="text-blue-600 hover:underline"
+                >
+                  sn105409@gmail.com
+                </a>
+              </span>
             </li>
           </ul>
         </div>
