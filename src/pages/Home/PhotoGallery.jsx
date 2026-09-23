@@ -1,79 +1,136 @@
-import React, { useRef, useEffect, useState } from "react";
+
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Import } from "lucide-react";
+import { ArrowRight, Camera } from "lucide-react";
+
 import API from "../../api/api";
 
-export default function PhotoGallery() {
-  const scrollRef = useRef(null);
-  const [images, setImages] = useState([]);
 
-  // Fetch images from API
+export default function PhotoGallery() {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await API.get(
-          "/gallery/photos/"
-        );
-        console.log(res.data.results)
-        // Assuming API returns an array of image objects with `url` field
-        setImages(res.data.results); 
+        const res = await API.get("/gallery/photos/");
+        setImages(res.data.results || []);
       } catch (err) {
         console.error("Failed to fetch gallery images:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchImages();
   }, []);
 
-  // Auto-scroll
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    let scrollAmount = 0;
-
-    const step = () => {
-      if (!scrollContainer) return;
-      scrollAmount += 1; // speed
-      if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-        scrollAmount = 0;
-      }
-      scrollContainer.scrollLeft = scrollAmount;
-      requestAnimationFrame(step);
-    };
-
-    const animation = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animation);
-  }, [images]);
-
   return (
-    <section className="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
-      {/* Heading */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-          Photo Gallery
-        </h2>
-        <Link
-          to="/gallery"
-          className="text-blue-950 font-semibold hover:underline"
-        >
-          View all
-        </Link>
-      </div>
+    <section className="bg-[#f7f8fb] py-20 sm:py-24 lg:py-28">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-      {/* Auto-scroll gallery */}
-      <div ref={scrollRef} className="flex space-x-4 overflow-x-hidden py-2">
-        {[...images, ...images].map((img, idx) => (
-          <div
-            key={idx}
-            className="flex-shrink-0 w-60 h-40 sm:w-72 sm:h-48 md:w-80 md:h-56 rounded-lg overflow-hidden shadow-md hover:scale-105 transform transition border-4 border-gray-200"
-          >
+        {/* Header */}
+        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
 
-            <img
-              src={img.image}
-              alt={img.title}
-              className="w-full h-full object-cover"
-            />
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#a06a00]">
+              <Camera className="h-4 w-4" />
+              Campus Life
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tight text-[#00236f] sm:text-4xl">
+              Photo Gallery
+            </h2>
           </div>
-        ))}
+
+          <Link
+            href="/gallery"
+            className="inline-flex items-center gap-2 text-sm font-bold text-[#00236f] hover:underline"
+          >
+            View All Photos
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="h-64 animate-pulse rounded-2xl bg-slate-200"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Gallery */}
+        {!loading && images.length > 0 && (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-12 md:grid-rows-2">
+
+            {/* Featured */}
+            <Link
+              href="/gallery"
+              className="group relative min-h-[360px] overflow-hidden rounded-2xl md:col-span-7 md:row-span-2 md:min-h-[520px]"
+            >
+              <img
+                src={images[0].image}
+                alt={images[0].title || "Narayanpur High School"}
+                className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-[#00236f]/80 via-transparent to-transparent" />
+
+              <div className="absolute bottom-0 left-0 p-6 text-white sm:p-8">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#e7c47a]">
+                  Featured
+                </span>
+
+                <h3 className="mt-2 text-2xl font-bold sm:text-3xl">
+                  Life at Narayanpur High School
+                </h3>
+              </div>
+            </Link>
+
+            {/* Smaller images */}
+            {images.slice(1, 5).map((img, index) => (
+              <Link
+                key={index}
+                href="/gallery"
+                className="group relative min-h-[220px] overflow-hidden rounded-2xl md:col-span-5"
+              >
+                <img
+                  src={img.image}
+                  alt={img.title || "School gallery"}
+                  className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                />
+
+                <div className="absolute inset-0 bg-[#00236f]/10 transition group-hover:bg-[#00236f]/30" />
+
+                {img.title && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pt-10">
+                    <p className="text-sm font-semibold text-white">
+                      {img.title}
+                    </p>
+                  </div>
+                )}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Empty */}
+        {!loading && images.length === 0 && (
+          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
+            <Camera className="mx-auto h-8 w-8 text-slate-400" />
+
+            <p className="mt-4 font-semibold text-[#00236f]">
+              No gallery photos available.
+            </p>
+          </div>
+        )}
+
       </div>
     </section>
   );
