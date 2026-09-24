@@ -6,195 +6,215 @@ import {
   Autoplay,
   A11y,
 } from "swiper/modules";
+import { History, ArrowRight } from "lucide-react";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import API from "../../api/api";
-import CardHeader from "../../components/Titles/CardHeads";
 
 export default function MessageCarousel() {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const res = await API.get("/nphs/message/");
-        setMessages(res.data.results);
-        console.log(res.data.results);
+        setMessages(res.data.results || []);
       } catch (err) {
         console.error("Error fetching messages:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMessages();
   }, []);
+
   return (
-    <section className="w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
+    <section className="bg-slate-100 py-20 sm:py-24 lg:py-28 text-[#0b1c30]">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        <CardHeader text="Teachers Message" />
+        {/* Loading */}
+        {loading && (
+          <div className="flex min-h-[450px] items-center justify-center">
+            <p className="text-sm font-medium text-slate-500">
+              Loading teachers' messages...
+            </p>
+          </div>
+        )}
 
-        {messages.length > 0 && (
+        {/* Empty */}
+        {!loading && messages.length === 0 && (
+          <div className="rounded-xl bg-white p-12 text-center shadow-sm">
+            <p className="font-semibold text-[#00236f]">
+              No messages available at the moment.
+            </p>
+          </div>
+        )}
+
+        {/* Messages */}
+        {!loading && messages.length > 0 && (
           <Swiper
             modules={[Navigation, Pagination, Autoplay, A11y]}
             slidesPerView={1}
-            spaceBetween={20}
+            spaceBetween={30}
             speed={700}
-            grabCursor={true}
-            navigation={true}
+            grabCursor
+            navigation={messages.length > 1}
             pagination={{
               clickable: true,
               dynamicBullets: true,
             }}
             autoplay={{
-              delay: 5000,
+              delay: 6000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
             loop={messages.length > 1}
-            className="teachers-message-swiper"
+            className="principal-message-swiper !pb-14"
           >
             {messages.map((msg, index) => (
-              <SwiperSlide key={index} className="pb-12">
+              <SwiperSlide key={index}>
 
-                <div
-                  className="
-                    bg-white
-                    rounded-2xl
-                    shadow-xl
-                    overflow-hidden
+                <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
 
-                    p-5
-                    sm:p-7
-                    md:p-8
-                    lg:p-10
+                  {/* =========================
+                      LEFT — TEACHER PORTRAIT
+                  ========================== */}
+                  <div className="relative lg:col-span-5">
 
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
+                    {/* Portrait Card */}
+                    <div className="rounded-2xl bg-white p-4 shadow-xl sm:p-5">
 
-                    gap-7
-                    sm:gap-8
-                    md:gap-10
+                      {/* Image */}
+                      <div className="relative aspect-square overflow-hidden rounded-xl">
 
-                    items-center
-                  "
-                >
+                        <img
+                          src={
+                            msg.message_of?.image ||
+                            "/default.png"
+                          }
+                          alt={
+                            msg.message_of?.full_name ||
+                            "Teacher"
+                          }
+                          className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                        />
 
-                
-                  {/* Teacher Image */}
-                  <div className="flex justify-center md:justify-start md:ml-12 lg:ml-16">
-                    <div
-                      className="
-                        relative
+                      </div>
 
-                        w-[300px]
-                        h-[300px]
-                        sm:w-[340px]
-                        sm:h-[340px]
-                        md:w-[390px]
-                        md:h-[390px]
-                        lg:w-[430px]
-                        lg:h-[430px]
+                      {/* Teacher information */}
+                      <div className="pt-5 text-center">
 
-                        rounded-full
-                        p-2
+                        <h3 className="font-serif text-2xl font-bold text-[#00236f] sm:text-3xl">
+                          {msg.message_of?.full_name}
+                        </h3>
 
-                        bg-white
-                        border-[3px]
-                        border-blue-200
+                        <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#855300]">
+                          Teacher &amp; Educator
+                        </p>
 
-                        shadow-[0_0_35px_rgba(59,130,246,0.25)]
-                      "
-                    >
+                        <p className="mt-2 text-sm text-[#444651]">
+                          Narayanpur High School
+                        </p>
 
-                      {/* Decorative outer ring */}
-                      <div
-                        className="
-                          absolute
-                          inset-[-10px]
-                          rounded-full
-                          border
-                          border-blue-200
-                          pointer-events-none
-                        "
-                      ></div>
+                      </div>
+                    </div>
 
-                      
+                    {/* Decorative badge */}
+                    <div className="absolute -right-3 -top-4 hidden h-20 w-20 flex-col items-center justify-center rounded-full bg-[#855300] p-2 text-center text-white shadow-lg sm:flex">
 
-                      {/* Teacher photo */}
-                      <img
-                        src={msg.message_of.image || "/default.png"}
-                        alt={msg.message_of.full_name}
-                        className="
-                          w-full
-                          h-full
-                          rounded-full
-                          object-cover
-                          object-[center_20%]
-                          border-4
-                          border-white
-                          transition-transform
-                          duration-300
-                          md:hover:scale-[1.02]
-                        "
-                      />
+                      <History className="h-5 w-5" />
+
+                      <span className="mt-1 text-[9px] font-bold uppercase leading-tight tracking-wide">
+                        Teacher's
+                        <br />
+                        Voice
+                      </span>
 
                     </div>
+
                   </div>
 
-                  {/* Message */}
-                  <div className="relative text-gray-900 md:-ml-6 lg:-ml-8">
 
-                    {/* Quote decoration */}
-                    <div className="
-                      absolute
-                      -top-8
-                      sm:-top-10
-                      md:-top-14
-                      -left-1
-                      text-6xl
-                      sm:text-7xl
-                      md:text-8xl
-                      font-serif
-                      font-bold
-                      text-blue-200
-                      leading-none
-                    ">
-                      “
+                  {/* =========================
+                      RIGHT — MESSAGE
+                  ========================== */}
+                  <div className="lg:col-span-7">
+
+                    {/* Small label */}
+                    <div className="mb-3 flex items-center gap-2 text-[#855300]">
+
+                      <History className="h-[18px] w-[18px]" />
+
+                      <span className="text-[11px] font-bold uppercase tracking-[0.2em]">
+                        Leadership Perspective
+                      </span>
+
                     </div>
 
-                    <p className="
-                      relative
-                      text-lg
-                      sm:text-2xl
-                      md:text-3xl
-                      lg:text-4xl
-                      italic
-                      leading-relaxed
-                      text-gray-800
-                    ">
-                      {msg.message}
+
+                    {/* Heading */}
+                    <h2 className="font-serif text-3xl font-bold leading-tight tracking-tight text-[#00236f] sm:text-4xl lg:text-[40px] lg:leading-[48px]">
+                      A Message from Our Teacher
+                    </h2>
+
+
+                    {/* Main quotation */}
+                    <div className="relative mt-7 py-2 pl-7">
+
+                      {/* Decorative quote */}
+                      <span className="absolute left-0 top-0 select-none font-serif text-[80px] leading-none text-[#00236f]/15 sm:text-[96px]">
+                        “
+                      </span>
+
+                      <blockquote className="relative font-serif text-xl italic leading-relaxed text-[#00236f] sm:text-2xl lg:text-[30px] lg:leading-[38px]">
+                        {msg.message}
+                      </blockquote>
+
+                    </div>
+
+
+                    {/* Supporting message */}
+                    <p className="mt-7 text-base leading-7 text-[#444651]">
+                      Our teachers play a vital role in guiding students,
+                      encouraging curiosity, and helping every learner build
+                      confidence, discipline, and a strong foundation for the
+                      future.
                     </p>
 
-                    {/* Teacher name */}
-                    <div className="mt-6 flex items-center gap-3">
-                      <span className="h-px w-10 sm:w-14 bg-gray-800"></span>
 
-                      <p className="
-                        text-base
-                        sm:text-lg
-                        md:text-xl
-                        font-medium
-                        text-gray-800
-                      ">
-                        {msg.message_of.full_name}
-                      </p>
+                    {/* Signature */}
+                    <div className="mt-8 flex items-center justify-between border-t border-[#c5c5d3] pt-6">
+
+                      <div>
+
+                        <div className="font-serif text-2xl font-bold italic text-[#00236f]">
+                          {msg.message_of?.full_name}
+                        </div>
+
+                        <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-[#444651]">
+                          Educator • Narayanpur High School
+                        </div>
+
+                      </div>
+
+                      <div className="hidden sm:block">
+
+                        <span className="inline-flex items-center gap-1 text-sm font-bold text-[#00236f] transition hover:underline">
+                          Our Educators
+                          <ArrowRight className="h-4 w-4" />
+                        </span>
+
+                      </div>
+
                     </div>
 
                   </div>
+
                 </div>
 
               </SwiperSlide>
