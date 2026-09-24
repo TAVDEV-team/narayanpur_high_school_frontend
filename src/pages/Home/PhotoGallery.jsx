@@ -29,29 +29,45 @@ export default function PhotoGallery() {
     <section className="bg-[#f7f8fb] py-20 sm:py-24 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        {/* Header */}
-        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        
+{/* Header */}
+<div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
 
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#a06a00]">
-              <Camera className="h-4 w-4" />
-              Campus Life
-            </div>
+  <div>
+    {/* Eyebrow */}
+    <div className="mb-3 flex items-center gap-2">
+      <Camera className="h-4 w-4 text-[#855300]" />
 
-            <h2 className="text-3xl font-bold tracking-tight text-[#00236f] sm:text-4xl">
-              Photo Gallery
-            </h2>
-          </div>
+      <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#855300]">
+        Campus Life
+      </span>
+    </div>
 
-          <Link
-            href="/gallery"
-            className="inline-flex items-center gap-2 text-sm font-bold text-[#00236f] hover:underline"
-          >
-            View All Photos
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+    {/* Main heading */}
+    <h2 className="font-serif text-3xl font-bold leading-tight tracking-tight text-[#00236f] sm:text-4xl lg:text-5xl">
+      Moments from Our School
+    </h2>
 
-        </div>
+    {/* Description */}
+    <p className="mt-3 max-w-xl text-sm leading-6 text-[#444651] sm:text-base">
+      Explore memorable moments, school activities, and everyday life at
+      Narayanpur High School.
+    </p>
+  </div>
+
+  {/* View all */}
+  <Link
+    href="/gallery"
+    className="group inline-flex w-fit items-center gap-2 border-b border-[#00236f] pb-1 text-sm font-bold text-[#00236f] transition hover:border-[#855300] hover:text-[#855300]"
+  >
+    View All Photos
+
+    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+  </Link>
+
+</div>
+
+
 
         {/* Loading */}
         {loading && (

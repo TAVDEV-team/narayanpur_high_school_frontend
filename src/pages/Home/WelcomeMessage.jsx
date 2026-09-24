@@ -33,23 +33,49 @@ export default function WelcomeMessage() {
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        {/* Heading */}
-        <div
-          className={`mb-14 max-w-3xl transition-all duration-700 ${
-            isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
-          }`}
-        >
-          <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#a06a00]">
-            <BookOpen className="h-4 w-4" />
-            Our Heritage
-          </div>
+      
+{/* Heading */}
+<div
+  className={`mb-14 max-w-4xl transition-all duration-700 ${
+    isVisible
+      ? "translate-y-0 opacity-100"
+      : "translate-y-8 opacity-0"
+  }`}
+>
+  {/* Eyebrow */}
+  <div className="mb-5 flex items-center gap-3">
+    <span className="h-px w-10 bg-[#a06a00]" />
 
-          <h2 className="text-3xl font-bold tracking-tight text-[#00236f] sm:text-4xl lg:text-5xl">
-            Discover Narayanpur High School
-          </h2>
-        </div>
+    <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[#a06a00]">
+      <BookOpen className="h-4 w-4" />
+      Our Heritage
+    </div>
+
+    <span className="h-px w-10 bg-[#a06a00]" />
+  </div>
+
+  {/* Main heading */}
+  <h2 className="max-w-3xl font-serif text-4xl font-bold leading-[1.1] tracking-tight text-[#00236f] sm:text-5xl lg:text-6xl">
+    Discover
+    <span className="block text-[#0b1c30]">
+      Narayanpur High School
+    </span>
+  </h2>
+
+  {/* Gold accent */}
+  <div className="mt-6 flex items-center gap-3">
+    <span className="h-1 w-16 rounded-full bg-[#a06a00]" />
+    <span className="h-1 w-2 rounded-full bg-[#a06a00]" />
+  </div>
+
+  {/* Supporting text */}
+  <p className="mt-6 max-w-2xl text-base leading-7 text-[#444651] sm:text-lg">
+    A tradition of education, discipline, and character building since 1980,
+    shaping generations of students in Cumilla.
+  </p>
+</div>
+
+
 
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-20">
 

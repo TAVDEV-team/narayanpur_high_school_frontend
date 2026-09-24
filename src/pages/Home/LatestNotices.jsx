@@ -1,7 +1,4 @@
 
-
-
-
 "use client";
 
 import { Link } from "react-router-dom";
@@ -24,28 +21,53 @@ export default function LatestNotices() {
     <section className="bg-white py-20 sm:py-24 lg:py-28">
       <div className="bg-[#00236f] rounded-3xl mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        {/* Heading */}
-        <div className="mb-10 pt-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      
+{/* Heading */}
+<div className="mb-12 flex flex-col gap-8 pt-10 md:flex-row md:items-end md:justify-between">
 
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#e9a318]">
-              <Bell className="h-4 w-4" />
-              STAY INFORMED
-            </div>
+  {/* Heading Content */}
+  <div className="max-w-2xl">
 
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Official School Notices
-            </h2>
-          </div>
+    {/* Eyebrow */}
+    <div className="mb-4 flex items-center gap-3">
+      <span className="h-px w-10 bg-[#e9a318]" />
 
-          <Link
-            to="/notice-approved"
-            className="inline-flex items-center gap-2 rounded-lg border pt-5 border-white px-5 py-3 text-sm font-bold text-white transition hover:bg-white hover:text-[#00236f]"
-          >
-            View All Notices
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+      <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#e9a318]">
+        School Updates
+      </span>
+
+      <span className="h-px w-10 bg-[#e9a318]" />
+    </div>
+
+    {/* Main Heading */}
+    <h2 className="font-serif text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-[52px]">
+      Stay Informed.
+      <br />
+      <span className="text-[#e9a318]">
+        Stay Connected.
+      </span>
+    </h2>
+
+    {/* Description */}
+    <p className="mt-5 max-w-xl text-sm leading-7 text-blue-100 sm:text-base">
+      Stay up to date with the latest announcements, academic updates,
+      events, and important information from Narayanpur High School.
+    </p>
+
+  </div>
+
+  {/* View All Button */}
+  <Link
+    to="/notice-approved"
+    className="group inline-flex w-fit shrink-0 items-center gap-3 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-[#00236f]"
+  >
+    <span>View All Notices</span>
+
+    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+  </Link>
+
+</div>
+
 
         {/* Loading */}
         {loading && (

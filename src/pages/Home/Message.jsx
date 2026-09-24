@@ -34,7 +34,7 @@ export default function MessageCarousel() {
   }, []);
 
   return (
-    <section className="bg-[#eff4ff] py-20 sm:py-24 lg:py-28 text-[#0b1c30]">
+    <section className="bg-slate-100 py-20 sm:py-24 lg:py-28 text-[#0b1c30]">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
         {/* Loading */}

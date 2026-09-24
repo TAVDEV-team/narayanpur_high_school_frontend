@@ -93,7 +93,7 @@ export default function Hero({
 
               {/* Secondary CTA */}
               <a
-                href="#admissions"
+                href="/documents"
                 className="group inline-flex items-center justify-center rounded-lg bg-[#1e3a8a] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#264191]"
               >
                 <span>Explore Admissions</span>

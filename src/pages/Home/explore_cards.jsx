@@ -32,29 +32,42 @@ export default function ExploreCards() {
   ];
 
   return (
-    <section className="bg-blue-50 py-20 sm:py-24 lg:py-28">
+    <section className="bg-slate-100 py-20 sm:py-24 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
-        {/* Heading */}
-        <div className="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        {/* =========================
+            SECTION HEADING
+        ========================== */}
+        <div className="mb-14 lg:mb-16">
 
-          <div>
-            <div className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#a06a00]">
+          {/* Eyebrow */}
+          <div className="mb-4 flex items-center gap-3">
+            <span className="h-px w-10 bg-[#a06a00]" />
+
+            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#a06a00]">
               Pathways to Excellence
-            </div>
-
-            <h2 className="text-3xl font-bold tracking-tight text-[#00236f] sm:text-4xl">
-              Discover Our School
-            </h2>
+            </span>
           </div>
 
-          <p className="max-w-md text-sm leading-6 text-slate-700">
-            Explore the resources, people, and opportunities that make
-            Narayanpur High School a place for learning and growth.
-          </p>
+          {/* Heading */}
+          <div className="max-w-3xl">
+            <h2 className="font-serif text-4xl font-bold leading-tight tracking-tight text-[#00236f] sm:text-5xl lg:text-[52px] lg:leading-[1.1]">
+              Discover Our School
+            </h2>
+
+            <div className="mt-5 h-[2px] w-16 bg-[#a06a00]" />
+
+            <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              Explore the resources, people, and opportunities that make
+              Narayanpur High School a place for learning, growth, and
+              community.
+            </p>
+          </div>
         </div>
 
-        {/* Cards */}
+        {/* =========================
+            CARDS
+        ========================== */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
           {features.map((item) => {
@@ -67,7 +80,9 @@ export default function ExploreCards() {
               >
                 <div>
 
+                  {/* Icon + Category */}
                   <div className="mb-7 flex items-center justify-between">
+
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#e9edf7] text-[#00236f] transition-transform duration-300 group-hover:scale-110">
                       <Icon className="h-6 w-6" />
                     </div>
@@ -75,17 +90,22 @@ export default function ExploreCards() {
                     <span className="rounded-full bg-slate-200 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#00236f]">
                       {item.category}
                     </span>
+
                   </div>
 
+                  {/* Card title */}
                   <h3 className="text-2xl font-bold tracking-tight text-[#00236f]">
                     {item.title}
                   </h3>
 
+                  {/* Description */}
                   <p className="mt-3 text-sm leading-6 text-slate-600">
                     {item.desc}
                   </p>
+
                 </div>
 
+                {/* Link */}
                 <a
                   href={item.href}
                   className="mt-8 inline-flex items-center gap-1 text-sm font-bold text-[#00236f]"
@@ -94,6 +114,7 @@ export default function ExploreCards() {
 
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </a>
+
               </div>
             );
           })}
