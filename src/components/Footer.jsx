@@ -19,10 +19,10 @@ export default function Footer() {
           <div className="lg:col-span-5">
 
             <Link
-              href="/"
+              to="/"
               className="flex items-center gap-3"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full">
                 <img
                   src="/logo.png"
                   alt="Narayanpur High School"
@@ -62,7 +62,7 @@ export default function Footer() {
                 <Phone className="h-5 w-5 shrink-0 text-[#d7b35d]" />
 
                 <a
-                  href="tel:+8801819823733"
+                  to="tel:+8801819823733"
                   className="text-sm text-blue-100/80 transition hover:text-white"
                 >
                   +880 1819-823733
@@ -73,7 +73,7 @@ export default function Footer() {
                 <Mail className="h-5 w-5 shrink-0 text-[#d7b35d]" />
 
                 <a
-                  href="mailto:sn105409@gmail.com"
+                  to="mailto:sn105409@gmail.com"
                   className="text-sm text-blue-100/80 transition hover:text-white"
                 >
                   sn105409@gmail.com
@@ -94,7 +94,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/"
+                  to="/"
                   className="transition hover:text-white"
                 >
                   Home
@@ -103,7 +103,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/teacher"
+                  to="/teacher"
                   className="transition hover:text-white"
                 >
                   Teachers
@@ -112,7 +112,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/gallery"
+                  to="/gallery"
                   className="transition hover:text-white"
                 >
                   Gallery
@@ -121,7 +121,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/contact"
+                  to="/contact"
                   className="transition hover:text-white"
                 >
                   Contact
@@ -142,7 +142,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/documents"
+                  to="/documents"
                   className="transition hover:text-white"
                 >
                   Documents
@@ -151,7 +151,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/notice-approved"
+                  to="/notice-approved"
                   className="transition hover:text-white"
                 >
                   Notices
@@ -160,7 +160,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/routine"
+                  to="/routine"
                   className="transition hover:text-white"
                 >
                   Class Routine
@@ -169,7 +169,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/syllabus"
+                  to="/syllabus"
                   className="transition hover:text-white"
                 >
                   Syllabus
@@ -190,7 +190,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/governing-body"
+                  to="/governing-body"
                   className="inline-flex items-center gap-1 transition hover:text-white"
                 >
                   Governing Body
@@ -200,7 +200,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/teacher"
+                  to="/teacher"
                   className="inline-flex items-center gap-1 transition hover:text-white"
                 >
                   Teacher Information
@@ -210,7 +210,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/staffs"
+                  to="/staffs"
                   className="inline-flex items-center gap-1 transition hover:text-white"
                 >
                   Staff Information
@@ -235,7 +235,7 @@ export default function Footer() {
           </p>
 
           <a
-            href="https://tavdev.com/"
+            to="https://tavdev.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-blue-100/50 transition hover:text-white"
