@@ -1,293 +1,573 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 
-const Navbar = () => {
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ChevronDown,
+  Menu,
+  X,
+  GraduationCap,
+  LogIn,
+  User,
+} from "lucide-react";
+
+export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const mobileRef = useRef(null);
-  const toggleRef = useRef(null);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [logoutMessage, setLogoutMessage] = useState("");
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [logoutError, setLogoutError] = useState(null);
-  
-const [isLoggedIn, setIsLoggedIn] = useState(() =>
-  !!localStorage.getItem("accessToken")
-);
+  const navRef = useRef(null);
 
-useEffect(() => {
-  const handleLoginEvent = () => {
-    setIsLoggedIn(!!localStorage.getItem("accessToken"));
-  };
-  window.addEventListener("login", handleLoginEvent);
-  window.addEventListener("logout", handleLoginEvent); // optional: react to logout
-  return () => {
-    window.removeEventListener("login", handleLoginEvent);
-    window.removeEventListener("logout", handleLoginEvent);
-  };
-}, []);
-
-
+  /* =========================
+     AUTH STATE
+  ========================= */
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handler);
-    handler();
-    return () => window.removeEventListener("scroll", handler);
+    const checkAuth = () => {
+      setIsLoggedIn(Boolean(localStorage.getItem("accessToken")));
+    };
+
+    checkAuth();
+
+    window.addEventListener("login", checkAuth);
+    window.addEventListener("logout", checkAuth);
+
+    return () => {
+      window.removeEventListener("login", checkAuth);
+      window.removeEventListener("logout", checkAuth);
+    };
   }, []);
 
-  // Close on Escape
+  /* =========================
+     SCROLL EFFECT
+  ========================= */
+
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  /* =========================
+     CLOSE ON ESCAPE
+  ========================= */
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
         setMobileOpen(false);
         setOpenMenu(null);
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
-  // Click-outside: use 'click' and ignore clicks that originate on the toggle button
+  /* =========================
+     CLICK OUTSIDE MOBILE MENU
+  ========================= */
+
   useEffect(() => {
-    const onClickOutside = (e) => {
+    const handleClickOutside = (event) => {
       if (!mobileOpen) return;
-      if (mobileRef.current && mobileRef.current.contains(e.target)) return; // clicked inside menu
-      if (toggleRef.current && toggleRef.current.contains(e.target)) return; // clicked the toggle itself - let toggle handler do the job
-      setMobileOpen(false);
+
+      if (
+        mobileRef.current &&
+        !mobileRef.current.contains(event.target) &&
+        navRef.current &&
+        !navRef.current.contains(event.target)
+      ) {
+        setMobileOpen(false);
+      }
     };
-    document.addEventListener("click", onClickOutside);
-    return () => document.removeEventListener("click", onClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [mobileOpen]);
 
-  // Resize: close when switching to desktop
+  /* =========================
+     CLOSE MOBILE ON DESKTOP
+  ========================= */
+
   useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 768) setMobileOpen(false);
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileOpen(false);
+      }
     };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
-
+  /* =========================
+     LOGOUT
+  ========================= */
 
   const handleLogout = async () => {
-    setIsLoggingOut(true);
-    setLogoutError(null);
-    setLogoutMessage("");
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const res = await fetch(
-        "https://narayanpur-high-school.onrender.com/api/user/logout/",
-        { method: "POST", headers: { Authorization: `Token ${accessToken}` } }
-      );
-      if (!res.ok) throw new Error(`Server error: ${res.status}`);
-      localStorage.removeItem("accessToken");
-      setIsLoggedIn(false);
-      setLogoutMessage("✅ Logged out successfully");
-      localStorage.removeItem("accessToken");
-      window.dispatchEvent(new Event("logout"));
 
-      setTimeout(() => setLogoutMessage(""), 3000);
+      const response = await fetch(
+        "https://narayanpur-high-school.onrender.com/api/user/logout/",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Token ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Logout failed: ${response.status}`);
+      }
+
+      localStorage.removeItem("accessToken");
+
+      setIsLoggedIn(false);
+      setMobileOpen(false);
+
+      window.dispatchEvent(new Event("logout"));
     } catch (error) {
       console.error("Logout failed:", error);
-      setLogoutError(error.message);
-    } finally {
-      setIsLoggingOut(false);
     }
   };
 
-  // Menu items for logged-in users
-  const authMenuItems = [
-    { label: "Students", to: "/portal" }, 
-    { label: "Result", to: "/results" }, 
-    { label: "Profile", to: "/profile" },
-    { label: "Gallery", to: "/gallery" },
-    { label: "Contact", to: "/contact" },
+  /* =========================
+     NAVIGATION DATA
+  ========================= */
+
+  const academicLinks = [
+    {
+      label: "Documents",
+      to: "/documents",
+    },
+    {
+      label: "Notices",
+      to: "/notice-approved",
+    },
+    {
+      label: "Routine",
+      to: "/routine",
+    },
+    {
+      label: "Syllabus",
+      to: "/syllabus",
+    },
   ];
 
-  // Menu items for guests
-  const guestMenuItems = [
-    { label: "Students", to: "/portal" },
-    { label: "Result", to: "/results" }, 
-    { label: "Login", to: "/login" },
-    { label: "Gallery", to: "/gallery" },
-    { label: "Contact", to: "/contact" },
+  const administrationLinks = [
+    {
+      label: "Governing Body",
+      to: "/governing-body",
+    },
+    {
+      label: "Teacher Info",
+      to: "/teacher",
+    },
+    {
+      label: "Staff Info",
+      to: "/staffs",
+    },
   ];
 
-  const menuItems = isLoggedIn ? authMenuItems : guestMenuItems;
+  const commonLinks = [
+    {
+      label: "Students",
+      to: "/portal",
+    },
+    {
+      label: "Result",
+      to: "/results",
+    },
+    {
+      label: "Gallery",
+      to: "/gallery",
+    },
+    {
+      label: "Contact",
+      to: "/contact",
+    },
+  ];
 
-
-  const menuStructure = [
-  { label: "Academic", links: [
-    { label: "Documents", to: "/documents" },
-    { label: "Notices", to: "/notice-approved" },
-    { label: "Routine", to: "/routine" },
-    { label: "Syllabus", to: "/syllabus" }
-  ]},
-  // { label: "Portals", links: [
-  //   { label: "Students", to: "/portal" }
-  // ]},
-  { label: "Administration", links: [
-    { label: "Governing Body", to: "/governing-body" },
-    { label: "Teacher Info", to: "/teacher" },
-    { label: "Staff Info", to: "/staffs" }
-  ]}
-];
-
+  /* =========================
+     NAVBAR
+  ========================= */
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex flex-col md:flex-row items-center md:justify-between bg-blue-950">
-      <div className="w-full flex justify-between items-center px-4 py-3 md:py-4 md:px-6">
-        {/* Logo + Name */}
-        <Link to="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="School Logo" className="h-10 w-10 object-contain" />
-          {!mobileOpen && (
-            <span className="text-xl font-bold text-white hover:text-yellow-300 md:inline-block hidden">
+    <nav
+      ref={navRef}
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "border-b border-slate-200 bg-white/95 shadow-md backdrop-blur-md"
+          : "bg-[#00236f]/95 backdrop-blur-sm"
+      }`}
+    >
+      <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
+
+        {/* =========================
+            LOGO
+        ========================== */}
+
+        <Link
+          to="/"
+          className="group flex items-center gap-3"
+          onClick={() => setMobileOpen(false)}
+        >
+          <div className="flex h-11 w-11 items-center justify-center rounded-full shadow-sm">
+            <img
+              src="/logo.png"
+              alt="Narayanpur High School"
+              className="h-9 w-9 object-contain"
+            />
+          </div>
+
+          <div className="hidden sm:block">
+            <p
+              className={`font-serif text-lg font-bold leading-tight transition-colors ${
+                scrolled ? "text-[#00236f]" : "text-white"
+              }`}
+            >
               Narayanpur High School
-            </span>
-          )}
+            </p>
+
+            <p
+              className={`text-[9px] font-bold uppercase tracking-[0.18em] ${
+                scrolled ? "text-[#855300]" : "text-yellow-300"
+              }`}
+            >
+              Established 1980
+            </p>
+          </div>
         </Link>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-6 text-white items-center">
-          <NavItem label="Academic" links={[
-            { label: "Documents", to: "/documents" },
-            { label: "Notices", to: "/notice-approved" },
-            { label: "Routine", to: "/routine" },
-            { label: "Syllabus", to: "/syllabus" }
-          ]} openMenu={openMenu} setOpenMenu={setOpenMenu} id="academic" />
 
-          {/* <NavItem label="Portals" links={[
-            { label: "Students", to: "/portal" }
-          ]} openMenu={openMenu} setOpenMenu={setOpenMenu} id="portals" /> */}
+        {/* =========================
+            DESKTOP NAVIGATION
+        ========================== */}
 
-          <NavItem label="Administration" links={[
-            { label: "Governing Body", to: "/governing-body" },
-            // { label: "HeadMaster", to: "/headmaster" },
-            { label: "Teacher Info", to: "/teacher" },
-            { label: "Staff Info", to: "/staffs" }
-          ]} openMenu={openMenu} setOpenMenu={setOpenMenu} id="admin" />
+        <div className="hidden items-center gap-1 md:flex">
 
-          {menuItems.map((item, idx) => (
-            <li key={idx} className="whitespace-nowrap flex-wrap">
-              <Link to={item.to} className="hover:text-yellow-300">{item.label}</Link>
-            </li>
+          <NavLink
+            to="/"
+            label="Home"
+            scrolled={scrolled}
+          />
+
+          <Dropdown
+            label="Academic"
+            links={academicLinks}
+            openMenu={openMenu}
+            setOpenMenu={setOpenMenu}
+            id="academic"
+            scrolled={scrolled}
+          />
+
+          <Dropdown
+            label="Administration"
+            links={administrationLinks}
+            openMenu={openMenu}
+            setOpenMenu={setOpenMenu}
+            id="administration"
+            scrolled={scrolled}
+          />
+
+          {commonLinks.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              label={item.label}
+              scrolled={scrolled}
+            />
           ))}
 
+          {/* Authentication */}
 
-        </ul>
+          {isLoggedIn ? (
+            <Link
+              to="/profile"
+              className={`ml-3 flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                scrolled
+                  ? "border-[#00236f] text-[#00236f] hover:bg-[#00236f] hover:text-white"
+                  : "border-white/60 text-white hover:bg-white hover:text-[#00236f]"
+              }`}
+            >
+              <User className="h-4 w-4" />
+              Profile
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className={`ml-3 flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-sm transition ${
+                scrolled
+                  ? "bg-[#00236f] text-white hover:bg-[#00184d]"
+                  : "bg-white text-[#00236f] hover:bg-yellow-300"
+              }`}
+            >
+              <LogIn className="h-4 w-4" />
+              Login
+            </Link>
+          )}
+        </div>
 
-{/* Hamburger toggle */}
+
+        {/* =========================
+            MOBILE BUTTON
+        ========================== */}
+
         <button
-          ref={toggleRef}
-          aria-label="Toggle mobile menu"
+          type="button"
+          aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen(prev => !prev)} // functional update — safer
-          className="md:hidden flex flex-col justify-center items-center gap-1 h-8 w-8 focus:outline-none z-50"
+          onClick={() => setMobileOpen((prev) => !prev)}
+          className={`flex h-11 w-11 items-center justify-center rounded-full transition md:hidden ${
+            scrolled
+              ? "text-[#00236f] hover:bg-slate-100"
+              : "text-white hover:bg-white/10"
+          }`}
         >
-          <span className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}></span>
-          <span className={`block h-0.5 w-6 bg-white transition-opacity duration-300 ${mobileOpen ? "opacity-0" : ""}`}></span>
-          <span className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}></span>
+          {mobileOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
         </button>
-
       </div>
 
-    
-   
- {/* Mobile menu — absolute below the nav bar so the nav (and its button) stay above it.
-           z-40 ensures nav (z-50) stays on top of the menu. */}
-      
-{mobileOpen && (
-  <div
-    ref={mobileRef}
-    className="md:hidden absolute top-full left-0 right-0 z-40 bg-blue-900 text-white shadow-inner transition-all"
-  >
-    <div className="px-6 py-4 space-y-2">
-      <Link
-        to="/"
-        className="block py-2 hover:text-yellow-300"
-        onClick={() => setMobileOpen(false)}
-      >
-        Home
-      </Link>
 
-      {menuStructure.map((section, idx) => (
-        <MobileSection key={idx} label={section.label}>
-          {section.links.map((l, i) => (
+      {/* =========================
+          MOBILE MENU
+      ========================== */}
+
+      <div
+        ref={mobileRef}
+        className={`overflow-hidden border-t border-slate-200 bg-white transition-all duration-300 md:hidden ${
+          mobileOpen
+            ? "max-h-[90vh] opacity-100"
+            : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="max-h-[80vh] overflow-y-auto px-5 py-5">
+
+          <MobileLink
+            to="/"
+            label="Home"
+            closeMenu={() => setMobileOpen(false)}
+          />
+
+          <MobileDropdown
+            label="Academic"
+            links={academicLinks}
+          />
+
+          <MobileDropdown
+            label="Administration"
+            links={administrationLinks}
+          />
+
+          {commonLinks.map((item) => (
             <MobileLink
-              key={i}
-              to={l.to}
-              label={l.label}
+              key={item.to}
+              to={item.to}
+              label={item.label}
               closeMenu={() => setMobileOpen(false)}
             />
           ))}
-        </MobileSection>
-      ))}
 
-      {menuItems.map((item, idx) => (
-        <MobileLink
-          key={idx}
-          to={item.to}
-          label={item.label}
-          closeMenu={() => setMobileOpen(false)}
-        />
-      ))}
-    </div>
-  </div>
-)}
+          {/* Authentication */}
 
+          {isLoggedIn ? (
+            <>
+              <MobileLink
+                to="/profile"
+                label="Profile"
+                closeMenu={() => setMobileOpen(false)}
+              />
 
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="mt-2 flex w-full items-center rounded-lg px-4 py-3 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMobileOpen(false)}
+              className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-[#00236f] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#00184d]"
+            >
+              <LogIn className="h-4 w-4" />
+              Login
+            </Link>
+          )}
 
+        </div>
+      </div>
     </nav>
   );
-};
+}
 
-const NavItem = ({ label, links, openMenu, setOpenMenu, id }) => (
-  <li
-    className="relative"
-    onMouseEnter={() => setOpenMenu(id)}
-    onMouseLeave={() => setOpenMenu(null)}
-  >
-    <button aria-haspopup="true" aria-expanded={openMenu === id} className="hover:text-yellow-300">
-      {label}
-    </button>
-    {openMenu === id && (
-      <ul className="absolute top-full  left-0 bg-white text-black w-48 shadow-lg mt-1 rounded-md overflow-hidden z-10">
-        {links.map((link, idx) => (
-          <li key={idx} className="px-4 py-2 hover:bg-blue-100 border-b">
-            <Link to={link.to}>{link.label}</Link>
-          </li>
-        ))}
-      </ul>
-    )}
-  </li>
-);
 
-const MobileSection = ({ label, children }) => {
-  const [open, setOpen] = useState(false);
+/* =====================================================
+   DESKTOP NAV LINK
+===================================================== */
+
+function NavLink({ to, label, scrolled }) {
   return (
-    <div>
+    <Link
+      to={to}
+      className={`relative rounded-md px-3 py-2 text-sm font-semibold transition ${
+        scrolled
+          ? "text-[#24324a] hover:text-[#00236f]"
+          : "text-white hover:text-yellow-300"
+      }`}
+    >
+      {label}
+    </Link>
+  );
+}
+
+
+/* =====================================================
+   DESKTOP DROPDOWN
+===================================================== */
+
+function Dropdown({
+  label,
+  links,
+  openMenu,
+  setOpenMenu,
+  id,
+  scrolled,
+}) {
+  const isOpen = openMenu === id;
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpenMenu(id)}
+      onMouseLeave={() => setOpenMenu(null)}
+    >
       <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between py-2 hover:text-yellow-300"
+        type="button"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        className={`flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold transition ${
+          scrolled
+            ? "text-[#24324a] hover:text-[#00236f]"
+            : "text-white hover:text-yellow-300"
+        }`}
       >
-        <span>{label}</span>
-        <span>{open ? "−" : "+"}</span>
+        {label}
+
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
       </button>
-      {open && <div className="pl-4 mt-1">{children}</div>}
+
+      {isOpen && (
+        <div className="absolute left-0 top-full pt-2">
+          <div className="w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-2 shadow-xl">
+
+            {links.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="block px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-[#eff4ff] hover:text-[#00236f]"
+                onClick={() => setOpenMenu(null)}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-const MobileLink = ({ to, label, closeMenu }) => (
-  <Link to={to} className="block py-2 hover:text-yellow-300" onClick={closeMenu}>
-    {label}
-  </Link>
-);
-
-export default Navbar;
+}
 
 
+/* =====================================================
+   MOBILE LINK
+===================================================== */
+
+function MobileLink({ to, label, closeMenu }) {
+  return (
+    <Link
+      to={to}
+      onClick={closeMenu}
+      className="block border-b border-slate-100 px-2 py-3.5 text-sm font-semibold text-[#24324a] transition hover:text-[#00236f]"
+    >
+      {label}
+    </Link>
+  );
+}
+
+
+/* =====================================================
+   MOBILE DROPDOWN
+===================================================== */
+
+function MobileDropdown({ label, links }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b border-slate-100">
+
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex w-full items-center justify-between px-2 py-3.5 text-sm font-semibold text-[#24324a]"
+      >
+        <span>{label}</span>
+
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {open && (
+        <div className="mb-2 ml-3 border-l-2 border-[#00236f]/10 pl-3">
+
+          {links.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="block px-3 py-2.5 text-sm text-slate-600 transition hover:text-[#00236f]"
+            >
+              {link.label}
+            </Link>
+          ))}
+
+        </div>
+      )}
+    </div>
+  );
+}
 
