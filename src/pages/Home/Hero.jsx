@@ -56,10 +56,10 @@ export default function Hero({
 
             {/* Heritage Badge */}
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-[#ffddb8] backdrop-blur-md">
-              <span className="h-2 w-2 animate-ping rounded-full bg-[#fea619]" />
+            <span className="h-2 w-2 animate-ping rounded-full bg-[#fea619]" />
 
-              65-Year Scholastic Heritage • Est. 1959
-            </div>
+            School Hours • 10:00 AM – 4:00 PM
+          </div>
 
             {/* Heading */}
             <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
@@ -163,7 +163,7 @@ export default function Hero({
             {/* Stat 1 */}
             <div className="space-y-1">
               <div className="text-3xl font-bold text-[#ffddb8]">
-                65+
+                46+
               </div>
 
               <div className="text-[10px] font-bold uppercase tracking-widest text-[#bec6e0]">
@@ -196,11 +196,11 @@ export default function Hero({
             {/* Stat 4 */}
             <div className="space-y-1">
               <div className="text-3xl font-bold text-[#ffddb8]">
-                Cumilla
+                105409
               </div>
 
               <div className="text-[10px] font-bold uppercase tracking-widest text-[#bec6e0]">
-                Bangladesh
+                EIIN
               </div>
             </div>
 
