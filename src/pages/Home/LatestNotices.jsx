@@ -59,7 +59,7 @@ export default function LatestNotices() {
   {/* View All Button */}
   <Link
     to="/notice-approved"
-    className="group inline-flex w-fit shrink-0 items-center gap-3 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-[#00236f]"
+    className="group inline-flex w-fit shrink-0 items-center gap-3 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-[#e9a318] hover:text-white"
   >
     <span>View All Notices</span>
 

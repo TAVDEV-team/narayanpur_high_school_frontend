@@ -107,12 +107,12 @@ export default function WelcomeMessage() {
             </div>
 
             {/* Established badge */}
-            <div className="absolute -left-4 -top-5 flex h-20 w-20 flex-col items-center justify-center rounded-full bg-[#a06a00] text-center text-white shadow-lg">
-              <span className="text-xl font-bold">40+</span>
+            {/* <div className="absolute -left-4 -top-5 flex h-20 w-20 flex-col items-center justify-center rounded-full bg-[#a06a00] text-center text-white shadow-lg">
+              <span className="text-xl font-bold">46+</span>
               <span className="text-[8px] font-bold uppercase tracking-wider">
                 Years
               </span>
-            </div>
+            </div> */}
           </div>
 
           {/* Content */}
@@ -191,7 +191,7 @@ export default function WelcomeMessage() {
 
               <div className="border-l border-slate-200 px-4 sm:px-8">
                 <p className="text-3xl font-bold tracking-tight text-[#00236f] sm:text-4xl">
-                  40+
+                  46+
                 </p>
                 <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 sm:text-xs">
                   Years
