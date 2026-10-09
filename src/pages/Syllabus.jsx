@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-import { section } from "framer-motion/client";
 import API from "../api/api"
 import Loading from "../components/Loading";
 
@@ -14,7 +12,7 @@ export default function Syllabus() {
     API
       .get("/nphs/syllabus/")
       .then((res) => {
-        setSyllabusList(res.data);
+        setSyllabusList(res.data.results);
         setLoading(false);
       })
       .catch((err) => {
